@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import type { Roster, TeamData, PlayerData, RosterPlayer } from '../types';
-import { formatGold, validateRoster } from '../utils/rosterUtils';
+import type { Roster, TeamData, PlayerData, RosterPlayer, StarPlayerData } from '../types';
+import { formatGold, formatStat, validateRoster } from '../utils/rosterUtils';
 import { exportRoster, importRoster } from '../utils/exportImport';
 import { exportRosterPdf } from '../utils/pdfExport';
+import { skillNameToCategoryClass } from '../utils/skillUtils';
 import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
 import PlayerRow from './PlayerRow';
 import AvailablePlayers from './AvailablePlayers';
 import StarPlayers from './StarPlayers';
 import Inducements from './Inducements';
+import starPlayersRaw from '../data/starPlayers.json';
+
+const allStarPlayers = starPlayersRaw as StarPlayerData[];
 
 type Tab = 'roster' | 'stars' | 'inducements' | 'staff';
 
@@ -55,6 +59,13 @@ export default function BuilderTabs({
   const statLabels = ['MA', 'ST', 'AG', 'PA', 'AV'];
   const { lang, t } = useLang();
   const { showToast } = useToast();
+
+  const hiredStarData = useMemo(() => {
+    return (roster.starPlayers || []).map(sp => {
+      const data = allStarPlayers.find(s => s.name === sp.name);
+      return { rosterStar: sp, data };
+    });
+  }, [roster.starPlayers]);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'roster', label: t.tabRoster },
@@ -188,6 +199,51 @@ export default function BuilderTabs({
                 </table>
               </div>
             </div>
+
+            {hiredStarData.length > 0 && (
+              <div className="roster-stars-section">
+                <h3 className="section-subtitle">{t.starPlayers} ({hiredStarData.length})</h3>
+                <div className="roster-stars-list">
+                  {hiredStarData.map(({ rosterStar, data }) => (
+                    <div key={rosterStar.uid} className="roster-star-card">
+                      <div className="roster-star-top">
+                        <span className="roster-star-name">{rosterStar.name}</span>
+                        <span className="roster-star-cost">{formatGold(rosterStar.cost)}</span>
+                        <button
+                          className="btn-remove"
+                          onClick={() => rosterActions.removeStarPlayer(rosterStar.uid)}
+                          title={t.remove}
+                        >&times;</button>
+                      </div>
+                      {data && (
+                        <>
+                          <div className="roster-star-stats">
+                            {[data.MA, data.ST, data.AG, data.PA, data.AV].map((val, i) => (
+                              <span key={i} className="mobile-stat">
+                                <span className="mobile-stat-label">{statLabels[i]}</span>
+                                <span className="mobile-stat-value">{formatStat(val, i)}</span>
+                              </span>
+                            ))}
+                          </div>
+                          {data.skills.length > 0 && (
+                            <div className="roster-star-skills">
+                              {data.skills.map((skillName, i) => {
+                                const cls = skillNameToCategoryClass[skillName] || 'skill-t';
+                                return (
+                                  <span key={i} className={`skill-badge ${cls}`}>
+                                    {skillName}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

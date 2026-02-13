@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo, type RefObject } from 'react';
 import type { Roster, TeamData, InducementData } from '../types';
 import { useLang } from '../i18n';
 import { formatGold, formatStat, calculateTVBreakdown } from '../utils/rosterUtils';
@@ -59,6 +59,55 @@ interface Props {
 const STAT_LABELS = ['MA', 'ST', 'AG', 'PA', 'AV'];
 const SWIPE_THRESHOLD = 60;
 
+function StatusDropdown({ status, onChangeStatus, statusLabel, onOpenChange }: {
+  status: PlayerStatus;
+  onChangeStatus: (s: PlayerStatus) => void;
+  statusLabel: (s: PlayerStatus) => string;
+  onOpenChange?: (open: boolean) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const toggle = (v: boolean) => {
+    setOpen(v);
+    onOpenChange?.(v);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) toggle(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
+  return (
+    <div className="game-status-dropdown" ref={ref}>
+      <button
+        className={`game-status-trigger game-status-trigger-${status}`}
+        onClick={() => toggle(!open)}
+      >
+        {statusLabel(status)}
+        <span className="game-status-arrow">{open ? '\u25B2' : '\u25BC'}</span>
+      </button>
+      {open && (
+        <div className="game-status-menu">
+          {STATUS_CYCLE.map(s => (
+            <button
+              key={s}
+              className={`game-status-option game-status-option-${s} ${s === status ? 'selected' : ''}`}
+              onClick={() => { onChangeStatus(s); toggle(false); }}
+            >
+              {statusLabel(s)}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function GameView({ roster, team, skills, onSkillClick }: Props) {
   const { t, lang } = useLang();
   const [gameState, setGameState] = useState<GameState>(() => loadGameState(roster.id));
@@ -76,6 +125,7 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
     };
   }, []);
 
+  const [openDropdownUid, setOpenDropdownUid] = useState<string | null>(null);
   const { playerStatuses, usedRerolls, scoreHome, scoreAway, turn, half } = gameState;
 
   const tv = calculateTVBreakdown(roster, team);
@@ -235,7 +285,7 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
           return (
             <div
               key={player.uid}
-              className={`game-player-card game-status-${status}`}
+              className={`game-player-card game-status-${status} ${openDropdownUid === player.uid ? 'dropdown-open' : ''}`}
               onTouchStart={(e) => handleTouchStart(player.uid, e)}
               onTouchEnd={(e) => handleTouchEnd(player.uid, e)}
             >
@@ -247,15 +297,12 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
                 {player.name && (
                   <span className="game-player-pos">{player.position}</span>
                 )}
-                <select
-                  className={`game-status-select game-status-select-${status}`}
-                  value={status}
-                  onChange={(e) => setStatus(player.uid, e.target.value as PlayerStatus)}
-                >
-                  {STATUS_CYCLE.map(s => (
-                    <option key={s} value={s}>{statusLabel(s)}</option>
-                  ))}
-                </select>
+                <StatusDropdown
+                  status={status}
+                  onChangeStatus={(s) => setStatus(player.uid, s)}
+                  statusLabel={statusLabel}
+                  onOpenChange={(open) => setOpenDropdownUid(open ? player.uid : null)}
+                />
               </div>
               <div className="game-player-stats">
                 {player.playerStats.map((val, i) => (

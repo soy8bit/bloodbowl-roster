@@ -12,8 +12,10 @@ import SavedRosters from './SavedRosters';
 import SkillsPage from './SkillsPage';
 import LoginPage from './auth/LoginPage';
 import AdminLayout from './admin/AdminLayout';
-import HelpModal from './HelpModal';
+import HelpPage from './HelpPage';
+import LandingPage from './LandingPage';
 import type { TeamData, PlayerData } from '../types';
+import logoImg from '../assets/logo.png';
 import teamsRaw from '../data/teams.json';
 import playersRaw from '../data/players.json';
 import skillsRaw from '../data/skills.json';
@@ -126,7 +128,6 @@ function MainApp() {
 function AppContent() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
   const { lang, setLang, t } = useLang();
   const toastState = useToastState();
   const { user, logout } = useAuth();
@@ -137,7 +138,10 @@ function AppContent() {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isLoginRoute = location.pathname === '/login';
   const isSkillsRoute = location.pathname === '/skills';
-  const isHome = !isAdminRoute && !isLoginRoute && !isSkillsRoute;
+  const isHelpRoute = location.pathname === '/help';
+  const isCreateRoute = location.pathname === '/create';
+  const isLanding = location.pathname === '/';
+  const isHome = isLanding || isCreateRoute;
 
   useEffect(() => {
     setMenuOpen(false);
@@ -177,6 +181,12 @@ function AppContent() {
     <div className="app">
       <header className="app-header">
         <h1 className="app-title" onClick={() => navTo('/')}>{t.appTitle}</h1>
+        <img
+          src={logoImg}
+          alt="BB Roster Maker"
+          className="header-logo"
+          onClick={() => navTo('/')}
+        />
         <div className="header-controls">
           <button
             className="nav-btn lang-toggle"
@@ -209,13 +219,13 @@ function AppContent() {
             </button>
             {menuOpen && (
               <nav className="dropdown-menu" id="nav-dropdown">
-                <button className={`dropdown-item ${isHome ? 'active' : ''}`} onClick={() => navTo('/')}>
+                <button className={`dropdown-item ${isLanding ? 'active' : ''}`} onClick={() => navTo('/')}>
                   {t.navHome}
                 </button>
-                <button className="dropdown-item" onClick={() => navTo('/')}>
+                <button className={`dropdown-item ${isCreateRoute ? 'active' : ''}`} onClick={() => navTo('/create')}>
                   {t.newTeam}
                 </button>
-                <button className="dropdown-item" onClick={() => { navTo('/?v=saved'); }}>
+                <button className="dropdown-item" onClick={() => { navTo('/create?v=saved'); }}>
                   {t.savedRosters}
                 </button>
                 <button className={`dropdown-item ${isSkillsRoute ? 'active' : ''}`} onClick={() => navTo('/skills')}>
@@ -226,7 +236,7 @@ function AppContent() {
                     {t.navAdmin}
                   </button>
                 )}
-                <button className="dropdown-item" onClick={() => { setHelpOpen(true); setMenuOpen(false); }}>
+                <button className={`dropdown-item ${isHelpRoute ? 'active' : ''}`} onClick={() => navTo('/help')}>
                   {t.navHelp}
                 </button>
                 <div className="dropdown-divider" />
@@ -247,10 +257,12 @@ function AppContent() {
 
       <main className="app-main">
         <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/create" element={<MainApp />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/skills" element={<SkillsPage />} />
+          <Route path="/help" element={<HelpPage />} />
           <Route path="/admin/*" element={<AdminLayout />} />
-          <Route path="*" element={<MainApp />} />
         </Routes>
       </main>
 
@@ -261,7 +273,6 @@ function AppContent() {
           <span className="footer-version">v1.0.0</span>
         </div>
       </footer>
-      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <ToastList />
     </div>
     </ToastContext.Provider>
