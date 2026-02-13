@@ -10,10 +10,13 @@ import TeamSelector from './TeamSelector';
 import RosterBuilder from './RosterBuilder';
 import SavedRosters from './SavedRosters';
 import SkillsPage from './SkillsPage';
+import StarPlayersPage from './StarPlayersPage';
 import LoginPage from './auth/LoginPage';
 import AdminLayout from './admin/AdminLayout';
 import HelpPage from './HelpPage';
 import LandingPage from './LandingPage';
+import PolicyPage from './PolicyPage';
+import CookieBanner from './CookieBanner';
 import type { TeamData, PlayerData } from '../types';
 import logoImg from '../assets/logo.png';
 import teamsRaw from '../data/teams.json';
@@ -138,6 +141,7 @@ function AppContent() {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isLoginRoute = location.pathname === '/login';
   const isSkillsRoute = location.pathname === '/skills';
+  const isStarPlayersRoute = location.pathname === '/star-players';
   const isHelpRoute = location.pathname === '/help';
   const isCreateRoute = location.pathname === '/create';
   const isLanding = location.pathname === '/';
@@ -231,6 +235,9 @@ function AppContent() {
                 <button className={`dropdown-item ${isSkillsRoute ? 'active' : ''}`} onClick={() => navTo('/skills')}>
                   {t.navSkills}
                 </button>
+                <button className={`dropdown-item ${isStarPlayersRoute ? 'active' : ''}`} onClick={() => navTo('/star-players')}>
+                  {t.navStarPlayers}
+                </button>
                 {user?.isAdmin && (
                   <button className={`dropdown-item ${isAdminRoute ? 'active' : ''}`} onClick={() => navTo('/admin')}>
                     {t.navAdmin}
@@ -239,6 +246,16 @@ function AppContent() {
                 <button className={`dropdown-item ${isHelpRoute ? 'active' : ''}`} onClick={() => navTo('/help')}>
                   {t.navHelp}
                 </button>
+                <div className="dropdown-divider dropdown-mobile-controls">
+                  <div className="dropdown-controls-row">
+                    <button className="dropdown-item dropdown-lang" onClick={toggleLang}>
+                      {lang === 'en' ? 'Cambiar a Español' : 'Switch to English'}
+                    </button>
+                    <button className="dropdown-item dropdown-theme" onClick={toggleTheme}>
+                      {theme === 'dark' ? t.switchToLight : t.switchToDark}
+                    </button>
+                  </div>
+                </div>
                 <div className="dropdown-divider" />
                 {user ? (
                   <button className="dropdown-item" onClick={() => { logout(); setMenuOpen(false); }}>
@@ -261,7 +278,9 @@ function AppContent() {
           <Route path="/create" element={<MainApp />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/skills" element={<SkillsPage />} />
+          <Route path="/star-players" element={<StarPlayersPage />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/privacy" element={<PolicyPage />} />
           <Route path="/admin/*" element={<AdminLayout />} />
         </Routes>
       </main>
@@ -272,7 +291,11 @@ function AppContent() {
           <span className="footer-author">{t.footerAuthor}</span>
           <span className="footer-version">v1.0.0</span>
         </div>
+        <button className="footer-privacy-link" onClick={() => navTo('/privacy')}>
+          {t.cookiePolicy}
+        </button>
       </footer>
+      <CookieBanner />
       <ToastList />
     </div>
     </ToastContext.Provider>

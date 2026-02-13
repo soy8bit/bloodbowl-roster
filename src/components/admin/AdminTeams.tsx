@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import type { TeamData } from '../../types';
+import { useState, useEffect, useMemo } from 'react';
+import type { TeamData, PlayerData } from '../../types';
 
 const TOKEN_KEY = 'bb_token';
 
@@ -17,15 +17,22 @@ function emptyTeam(): TeamData {
 
 export default function AdminTeams() {
   const [teams, setTeams] = useState<TeamData[]>([]);
+  const [allPlayers, setAllPlayers] = useState<PlayerData[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [expandedTeam, setExpandedTeam] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch('/api/game-data/teams')
-      .then((r) => r.json())
-      .then((d) => setTeams(d.data || []))
-      .catch(() => setMessage({ type: 'error', text: 'Failed to load teams' }))
+    Promise.all([
+      fetch('/api/game-data/teams').then((r) => r.json()),
+      fetch('/api/game-data/players').then((r) => r.json()),
+    ])
+      .then(([td, pd]) => {
+        setTeams(td.data || []);
+        setAllPlayers(pd.data || []);
+      })
+      .catch(() => setMessage({ type: 'error', text: 'Failed to load data' }))
       .finally(() => setLoading(false));
   }, []);
 
@@ -35,6 +42,12 @@ export default function AdminTeams() {
       return () => clearTimeout(t);
     }
   }, [message]);
+
+  const playerMap = useMemo(() => {
+    const map = new Map<number, PlayerData>();
+    allPlayers.forEach((p) => map.set(p.id, p));
+    return map;
+  }, [allPlayers]);
 
   const updateTeam = (index: number, field: string, value: any) => {
     setTeams((prev) => {
@@ -52,22 +65,50 @@ export default function AdminTeams() {
     });
   };
 
-  const updatePlayers = (index: number, value: string) => {
-    try {
-      const slots = value.split(';').map((s) => {
-        const [id, max] = s.trim().split(':').map(Number);
-        return { id, max };
-      }).filter((s) => !isNaN(s.id) && !isNaN(s.max));
-      updateTeam(index, 'players', slots);
-    } catch {}
+  const updatePlayerSlot = (teamIndex: number, slotIndex: number, field: 'id' | 'max', value: number) => {
+    setTeams((prev) => {
+      const next = [...prev];
+      const players = [...next[teamIndex].players];
+      players[slotIndex] = { ...players[slotIndex], [field]: value };
+      next[teamIndex] = { ...next[teamIndex], players };
+      return next;
+    });
+  };
+
+  const addPlayerSlot = (teamIndex: number) => {
+    setTeams((prev) => {
+      const next = [...prev];
+      next[teamIndex] = {
+        ...next[teamIndex],
+        players: [...next[teamIndex].players, { id: 0, max: 16 }],
+      };
+      return next;
+    });
+  };
+
+  const removePlayerSlot = (teamIndex: number, slotIndex: number) => {
+    setTeams((prev) => {
+      const next = [...prev];
+      next[teamIndex] = {
+        ...next[teamIndex],
+        players: next[teamIndex].players.filter((_, i) => i !== slotIndex),
+      };
+      return next;
+    });
   };
 
   const updateSpecialRules = (index: number, value: string) => {
     updateTeam(index, 'specialRules', value.split(',').map((s) => s.trim()).filter(Boolean));
   };
 
-  const addRow = () => setTeams((prev) => [...prev, emptyTeam()]);
-  const removeRow = (index: number) => setTeams((prev) => prev.filter((_, i) => i !== index));
+  const addRow = () => {
+    setTeams((prev) => [...prev, emptyTeam()]);
+    setExpandedTeam(teams.length);
+  };
+  const removeRow = (index: number) => {
+    setTeams((prev) => prev.filter((_, i) => i !== index));
+    setExpandedTeam(null);
+  };
 
   const save = async () => {
     setSaving(true);
@@ -103,94 +144,148 @@ export default function AdminTeams() {
       {message && (
         <div className={`admin-message admin-message-${message.type}`}>{message.text}</div>
       )}
-      <div className="table-wrapper">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Players (id:max;...)</th>
-              <th>Reroll $</th>
-              <th>Reroll Max</th>
-              <th>Tier</th>
-              <th>Apo</th>
-              <th>Special Rules</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.map((t, i) => (
-              <tr key={i}>
-                <td>
-                  <input
-                    type="text"
-                    className="admin-input admin-input-sm"
-                    value={t.id}
-                    onChange={(e) => updateTeam(i, 'id', e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    className="admin-input"
-                    value={t.name}
-                    onChange={(e) => updateTeam(i, 'name', e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    className="admin-input admin-input-wide"
-                    value={t.players.map((p) => `${p.id}:${p.max}`).join('; ')}
-                    onChange={(e) => updatePlayers(i, e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="admin-input admin-input-sm"
-                    value={t.reroll.cost}
-                    onChange={(e) => updateReroll(i, 'cost', parseInt(e.target.value) || 0)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="admin-input admin-input-sm"
-                    value={t.reroll.max}
-                    onChange={(e) => updateReroll(i, 'max', parseInt(e.target.value) || 0)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="admin-input admin-input-sm"
-                    value={t.tier}
-                    onChange={(e) => updateTeam(i, 'tier', parseInt(e.target.value) || 1)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={t.allowedApothecary}
-                    onChange={(e) => updateTeam(i, 'allowedApothecary', e.target.checked)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    className="admin-input"
-                    value={t.specialRules.join(', ')}
-                    onChange={(e) => updateSpecialRules(i, e.target.value)}
-                  />
-                </td>
-                <td>
-                  <button className="btn-remove" onClick={() => removeRow(i)} title="Remove">-</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <div className="admin-star-list">
+        {teams.map((t, i) => {
+          const isExpanded = expandedTeam === i;
+          return (
+            <div key={i} className={`admin-star-card ${isExpanded ? 'expanded' : ''}`}>
+              <div
+                className="admin-star-summary"
+                onClick={() => setExpandedTeam(isExpanded ? null : i)}
+              >
+                <span className="admin-star-name">{t.name || '(unnamed)'}</span>
+                <span className="admin-star-cost">Tier {t.tier}</span>
+                <span className="admin-star-stats">
+                  <span className="admin-star-stat">Players: {t.players.length}</span>
+                  <span className="admin-star-stat">Reroll: {t.reroll.cost}k</span>
+                  <span className="admin-star-stat">{t.allowedApothecary ? 'Apo' : 'No Apo'}</span>
+                </span>
+                <span className="admin-star-expand">{isExpanded ? '▾' : '▸'}</span>
+              </div>
+              {isExpanded && (
+                <div className="admin-star-details">
+                  <div className="admin-star-row">
+                    <label>ID</label>
+                    <input
+                      type="text"
+                      className="admin-input admin-input-sm"
+                      value={t.id}
+                      onChange={(e) => updateTeam(i, 'id', e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={t.name}
+                      onChange={(e) => updateTeam(i, 'name', e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row admin-star-stats-row">
+                    <div className="admin-star-stat-input">
+                      <label>Reroll Cost</label>
+                      <input
+                        type="number"
+                        className="admin-input admin-input-sm"
+                        value={t.reroll.cost}
+                        onChange={(e) => updateReroll(i, 'cost', parseInt(e.target.value) || 0)}
+                      />
+                    </div>
+                    <div className="admin-star-stat-input">
+                      <label>Reroll Max</label>
+                      <input
+                        type="number"
+                        className="admin-input admin-input-sm"
+                        value={t.reroll.max}
+                        onChange={(e) => updateReroll(i, 'max', parseInt(e.target.value) || 0)}
+                      />
+                    </div>
+                    <div className="admin-star-stat-input">
+                      <label>Tier</label>
+                      <input
+                        type="number"
+                        className="admin-input admin-input-sm"
+                        value={t.tier}
+                        onChange={(e) => updateTeam(i, 'tier', parseInt(e.target.value) || 1)}
+                      />
+                    </div>
+                    <div className="admin-star-stat-input">
+                      <label>Apothecary</label>
+                      <input
+                        type="checkbox"
+                        checked={t.allowedApothecary}
+                        onChange={(e) => updateTeam(i, 'allowedApothecary', e.target.checked)}
+                      />
+                    </div>
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Special Rules</label>
+                    <input
+                      type="text"
+                      className="admin-input admin-input-wide"
+                      value={t.specialRules.join(', ')}
+                      onChange={(e) => updateSpecialRules(i, e.target.value)}
+                    />
+                  </div>
+
+                  {/* Player slots section */}
+                  <div className="admin-slots-section">
+                    <div className="admin-slots-header">
+                      <label>Player Slots</label>
+                      <button className="btn-admin-add btn-admin-add-sm" onClick={() => addPlayerSlot(i)}>+ Add Slot</button>
+                    </div>
+                    {t.players.map((slot, si) => {
+                      const player = playerMap.get(slot.id);
+                      return (
+                        <div key={si} className="admin-slot-row">
+                          <select
+                            className="admin-input admin-slot-select"
+                            value={slot.id}
+                            onChange={(e) => updatePlayerSlot(i, si, 'id', parseInt(e.target.value) || 0)}
+                          >
+                            <option value={0}>-- Select Player --</option>
+                            {allPlayers.map((p) => (
+                              <option key={p.id} value={p.id}>
+                                #{p.id} — {p.position} ({p.cost}k)
+                              </option>
+                            ))}
+                          </select>
+                          <div className="admin-slot-max">
+                            <label>Max</label>
+                            <input
+                              type="number"
+                              className="admin-input admin-input-sm"
+                              value={slot.max}
+                              min={1}
+                              onChange={(e) => updatePlayerSlot(i, si, 'max', parseInt(e.target.value) || 1)}
+                            />
+                          </div>
+                          {player && (
+                            <span className="admin-slot-info">
+                              MA:{player.playerStats[0]} ST:{player.playerStats[1]} AG:{player.playerStats[2]} PA:{player.playerStats[3]} AV:{player.playerStats[4]}
+                            </span>
+                          )}
+                          <button className="btn-remove" onClick={() => removePlayerSlot(i, si)} title="Remove">-</button>
+                        </div>
+                      );
+                    })}
+                    {t.players.length === 0 && (
+                      <div className="admin-empty" style={{ padding: '0.5rem' }}>No player slots</div>
+                    )}
+                  </div>
+
+                  <div className="admin-star-row admin-star-actions">
+                    <button className="btn-remove" onClick={() => removeRow(i)}>
+                      Remove Team
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import AdminPlayers from './AdminPlayers';
 import AdminTeams from './AdminTeams';
 import AdminSkills from './AdminSkills';
+import AdminStarPlayers from './AdminStarPlayers';
 
 export default function AdminLayout() {
   const { user, loading } = useAuth();
@@ -21,6 +22,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/teams" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Teams
           </NavLink>
+          <NavLink to="/admin/stars" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Star Players
+          </NavLink>
           <NavLink to="/admin/skills" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             Skills
           </NavLink>
@@ -31,6 +35,7 @@ export default function AdminLayout() {
           <Route index element={<Navigate to="players" replace />} />
           <Route path="players" element={<AdminPlayers />} />
           <Route path="teams" element={<AdminTeams />} />
+          <Route path="stars" element={<AdminStarPlayers />} />
           <Route path="skills" element={<AdminSkills />} />
         </Routes>
       </div>

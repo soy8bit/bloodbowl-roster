@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useLang } from '../i18n';
 import logoImg from '../assets/logo.png';
+import heroBg from '../assets/hero-bg.webp';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -18,17 +19,20 @@ export default function LandingPage() {
   return (
     <div className="landing">
       {/* Hero */}
-      <section className="landing-hero">
-        <img src={logoImg} alt="BB Roster Maker" className="landing-logo" />
-        <h2 className="landing-title">{t.appTitle}</h2>
-        <p className="landing-subtitle">{t.landingSubtitle}</p>
-        <div className="landing-cta-group">
-          <button className="landing-cta" onClick={() => navigate('/create')}>
-            {t.landingCta}
-          </button>
-          <button className="landing-cta-secondary" onClick={() => navigate('/create?v=saved')}>
-            {t.landingCtaSaved}
-          </button>
+      <section className="landing-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <div className="landing-hero-overlay" />
+        <div className="landing-hero-content">
+          <img src={logoImg} alt="BB Roster Maker" className="landing-logo" />
+          <h2 className="landing-title">{t.appTitle}</h2>
+          <p className="landing-subtitle">{t.landingSubtitle}</p>
+          <div className="landing-cta-group">
+            <button className="landing-cta" onClick={() => navigate('/create')}>
+              {t.landingCta}
+            </button>
+            <button className="landing-cta-secondary" onClick={() => navigate('/create?v=saved')}>
+              {t.landingCtaSaved}
+            </button>
+          </div>
         </div>
       </section>
 

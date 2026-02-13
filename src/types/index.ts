@@ -83,6 +83,7 @@ export interface Roster {
   coachName: string;
   teamId: string;
   teamName: string;
+  logo?: string;
   players: RosterPlayer[];
   starPlayers: RosterStarPlayer[];
   inducements: RosterInducement[];

@@ -10,6 +10,7 @@ const files: Record<string, string> = {
   players: 'players.json',
   teams: 'teams.json',
   skills: 'skills.json',
+  starPlayers: 'starPlayers.json',
 };
 
 const upsert = db.prepare(`

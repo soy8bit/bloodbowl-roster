@@ -184,6 +184,11 @@ export function useRoster() {
     [updateRoster],
   );
 
+  const setLogo = useCallback(
+    (logo: string | undefined) => updateRoster((r) => ({ ...r, logo })),
+    [updateRoster],
+  );
+
   const goBack = useCallback(() => {
     setCurrentId(null);
   }, [setCurrentId]);
@@ -223,6 +228,7 @@ export function useRoster() {
     addStarPlayer,
     removeStarPlayer,
     setInducement,
+    setLogo,
     savedRostersList,
     calculateTeamValue,
     validateRoster,

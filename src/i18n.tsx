@@ -14,6 +14,7 @@ const strings = {
     // Navigation
     navHome: 'Home',
     navSkills: 'Skills',
+    navStarPlayers: 'Star Players',
     navAdmin: 'Admin',
     navLogin: 'Login',
     navLogout: (email: string) => `Logout (${email})`,
@@ -35,6 +36,9 @@ const strings = {
     back: 'Back',
     teamNamePlaceholder: 'Team Name',
     coachNamePlaceholder: 'Coach Name',
+    uploadLogo: 'Upload Logo',
+    logoTooLarge: 'Image must be under 2MB',
+    removeLogo: 'Remove Logo',
     hideAvailable: 'Hide Available Players',
     showAvailable: 'Show Available Players',
     roster: 'Roster',
@@ -302,6 +306,50 @@ const strings = {
     landingStep2: 'Add players, staff, stars, and inducements within budget',
     landingStep3: 'Play! Use Game Mode to track your match live',
     landingBottomText: 'Ready to build your dream team?',
+
+    // Cookie banner
+    cookieText: 'This site uses cookies and local storage to save your rosters and preferences.',
+    cookiePolicy: 'Privacy & Cookie Policy',
+    cookieAccept: 'Accept',
+
+    // Policy page
+    policyTitle: 'Privacy & Cookie Policy',
+    policyUpdated: 'Last updated: February 2026',
+    policyIntroTitle: 'Introduction',
+    policyIntroContent: [
+      'BB Roster Maker ("the App") is a free, open-source tool for creating and managing Blood Bowl team rosters. We respect your privacy and are committed to transparency about how data is handled.',
+      'This policy explains what data the App stores, how it is used, and your rights regarding that data.',
+    ],
+    policyCookiesTitle: 'Cookies',
+    policyCookiesContent: [
+      'The App uses a minimal cookie (or localStorage entry) solely to remember that you have accepted this cookie policy. No tracking cookies, analytics cookies, or third-party advertising cookies are used.',
+      'The cookie stored is: "bb_cookies_accepted" — a simple flag ("1") indicating you have dismissed the cookie banner. It has no expiration and can be deleted at any time by clearing your browser data.',
+    ],
+    policyLocalStorageTitle: 'Local Storage',
+    policyLocalStorageContent: [
+      'The App uses your browser\'s Local Storage and Session Storage to save data locally on your device. This data never leaves your browser and is not sent to any server.',
+      'Data stored includes: your saved rosters (team composition, player names, staff configuration), your language preference (English/Spanish), your theme preference (dark/light), and temporary game mode state (scores, turns, player statuses) in session storage.',
+      'All stored data remains on your device. Clearing your browser data or local storage will permanently delete all saved rosters and preferences.',
+    ],
+    policyDataTitle: 'Data Collection',
+    policyDataContent: [
+      'The App does not collect, transmit, or store any personal data on external servers. There are no user accounts required to use the roster builder (the login feature is reserved for admin purposes only).',
+      'No analytics, telemetry, or usage tracking of any kind is performed. Your IP address is not logged by the App.',
+    ],
+    policyThirdPartyTitle: 'Third-Party Services',
+    policyThirdPartyContent: [
+      'The App is hosted as a static website. No third-party scripts for analytics, advertising, or tracking are loaded.',
+      'The only external resources loaded are web fonts (Google Fonts: Bungee, Inter) for typography purposes. Google\'s font service may log standard web request data per their own privacy policy.',
+    ],
+    policyRightsTitle: 'Your Rights',
+    policyRightsContent: [
+      'Since all data is stored locally in your browser, you have full control over it at all times. You can view, export (via JSON export), or delete your data whenever you wish.',
+      'To delete all App data: clear your browser\'s local storage for this site, or use your browser\'s "Clear site data" option.',
+    ],
+    policyContactTitle: 'Contact',
+    policyContactContent: [
+      'If you have any questions about this privacy policy or the App, you can reach us through the project\'s repository or contact the developer.',
+    ],
   },
   es: {
     // Header
@@ -314,6 +362,7 @@ const strings = {
     // Navigation
     navHome: 'Inicio',
     navSkills: 'Habilidades',
+    navStarPlayers: 'Jugadores Estrella',
     navAdmin: 'Admin',
     navLogin: 'Iniciar sesion',
     navLogout: (email: string) => `Cerrar sesion (${email})`,
@@ -335,6 +384,9 @@ const strings = {
     back: 'Volver',
     teamNamePlaceholder: 'Nombre del Equipo',
     coachNamePlaceholder: 'Nombre del Coach',
+    uploadLogo: 'Subir Logo',
+    logoTooLarge: 'La imagen debe ser menor a 2MB',
+    removeLogo: 'Quitar Logo',
     hideAvailable: 'Ocultar Jugadores Disponibles',
     showAvailable: 'Mostrar Jugadores Disponibles',
     roster: 'Plantilla',
@@ -602,6 +654,50 @@ const strings = {
     landingStep2: 'Añade jugadores, staff, estrellas e incentivos dentro del presupuesto',
     landingStep3: 'A jugar! Usa el Modo Juego para seguir tu partido en directo',
     landingBottomText: 'Listo para crear tu equipo ideal?',
+
+    // Cookie banner
+    cookieText: 'Este sitio usa cookies y almacenamiento local para guardar tus plantillas y preferencias.',
+    cookiePolicy: 'Politica de Privacidad y Cookies',
+    cookieAccept: 'Aceptar',
+
+    // Policy page
+    policyTitle: 'Politica de Privacidad y Cookies',
+    policyUpdated: 'Ultima actualizacion: Febrero 2026',
+    policyIntroTitle: 'Introduccion',
+    policyIntroContent: [
+      'BB Roster Maker ("la App") es una herramienta gratuita y de codigo abierto para crear y gestionar plantillas de equipos de Blood Bowl. Respetamos tu privacidad y nos comprometemos a ser transparentes sobre como se manejan los datos.',
+      'Esta politica explica que datos almacena la App, como se usan y tus derechos respecto a esos datos.',
+    ],
+    policyCookiesTitle: 'Cookies',
+    policyCookiesContent: [
+      'La App usa una cookie (o entrada de localStorage) minima unicamente para recordar que has aceptado esta politica de cookies. No se usan cookies de seguimiento, analitica ni publicidad de terceros.',
+      'La cookie almacenada es: "bb_cookies_accepted" — una simple marca ("1") que indica que has cerrado el banner de cookies. No tiene caducidad y puede eliminarse en cualquier momento limpiando los datos del navegador.',
+    ],
+    policyLocalStorageTitle: 'Almacenamiento Local',
+    policyLocalStorageContent: [
+      'La App usa el Local Storage y Session Storage de tu navegador para guardar datos localmente en tu dispositivo. Estos datos nunca salen de tu navegador y no se envian a ningun servidor.',
+      'Los datos almacenados incluyen: tus plantillas guardadas (composicion del equipo, nombres de jugadores, configuracion de staff), tu preferencia de idioma (ingles/español), tu preferencia de tema (oscuro/claro) y el estado temporal del modo juego (marcador, turnos, estados de jugadores) en session storage.',
+      'Todos los datos permanecen en tu dispositivo. Limpiar los datos del navegador o el almacenamiento local eliminara permanentemente todas las plantillas y preferencias guardadas.',
+    ],
+    policyDataTitle: 'Recopilacion de Datos',
+    policyDataContent: [
+      'La App no recopila, transmite ni almacena ningun dato personal en servidores externos. No se requieren cuentas de usuario para usar el creador de plantillas (la funcion de login esta reservada solo para administracion).',
+      'No se realiza ningun tipo de analitica, telemetria ni seguimiento de uso. Tu direccion IP no es registrada por la App.',
+    ],
+    policyThirdPartyTitle: 'Servicios de Terceros',
+    policyThirdPartyContent: [
+      'La App se aloja como un sitio web estatico. No se cargan scripts de terceros para analitica, publicidad ni seguimiento.',
+      'Los unicos recursos externos cargados son fuentes web (Google Fonts: Bungee, Inter) para tipografia. El servicio de fuentes de Google puede registrar datos estandar de solicitud web segun su propia politica de privacidad.',
+    ],
+    policyRightsTitle: 'Tus Derechos',
+    policyRightsContent: [
+      'Como todos los datos se almacenan localmente en tu navegador, tienes control total sobre ellos en todo momento. Puedes ver, exportar (via exportacion JSON) o eliminar tus datos cuando quieras.',
+      'Para eliminar todos los datos de la App: limpia el almacenamiento local de tu navegador para este sitio, o usa la opcion "Borrar datos del sitio" de tu navegador.',
+    ],
+    policyContactTitle: 'Contacto',
+    policyContactContent: [
+      'Si tienes alguna pregunta sobre esta politica de privacidad o la App, puedes contactarnos a traves del repositorio del proyecto o contactar al desarrollador.',
+    ],
   },
 };
 

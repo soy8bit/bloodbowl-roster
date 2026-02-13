@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, type ChangeEvent } from 'react';
 import type { Roster, TeamData, PlayerData } from '../types';
 import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
@@ -10,6 +10,7 @@ import SkillModal from './SkillModal';
 interface RosterActions {
   setName: (name: string) => void;
   setCoachName: (name: string) => void;
+  setLogo: (logo: string | undefined) => void;
   addPlayer: (player: PlayerData, team: TeamData) => void;
   removePlayer: (uid: string) => void;
   setPlayerName: (uid: string, name: string) => void;
@@ -46,8 +47,27 @@ export default function RosterBuilder({
   const [selectedSkill, setSelectedSkill] = useState<{ name: string; nameEs: string; category: string; description: string; descriptionEs: string } | null>(null);
   const [pendingRemoval, setPendingRemoval] = useState<{ uid: string; position: string } | null>(null);
   const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
   const { t } = useLang();
   const { showToast } = useToast();
+
+  const MAX_LOGO_SIZE = 2 * 1024 * 1024; // 2MB
+
+  const handleLogoUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > MAX_LOGO_SIZE) {
+      showToast(t.logoTooLarge, 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      rosterActions.setLogo(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    // Reset input so same file can be selected again
+    e.target.value = '';
+  }, [rosterActions, showToast, t]);
 
   const handleSkillClick = useCallback((skillId: number) => {
     const s = skills[String(skillId)];
@@ -101,6 +121,35 @@ export default function RosterBuilder({
     <div className="roster-builder">
       <div className="builder-header">
         <button className="btn-back" onClick={onBack}>&larr; {t.back}</button>
+        {!gameMode && (
+          <div
+            className={`logo-upload-area ${roster.logo ? 'has-logo' : ''}`}
+            onClick={() => !roster.logo && logoInputRef.current?.click()}
+            title={roster.logo ? t.removeLogo : t.uploadLogo}
+          >
+            {roster.logo ? (
+              <>
+                <img src={roster.logo} alt="Logo" className="logo-upload-img" />
+                <button
+                  className="logo-upload-remove"
+                  onClick={(e) => { e.stopPropagation(); rosterActions.setLogo(undefined); }}
+                >&times;</button>
+              </>
+            ) : (
+              <span className="logo-upload-icon">+</span>
+            )}
+            <input
+              ref={logoInputRef}
+              type="file"
+              className="logo-upload-input"
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
+          </div>
+        )}
+        {gameMode && roster.logo && (
+          <img src={roster.logo} alt="Logo" className="logo-upload-img" style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+        )}
         <div className="team-info">
           {gameMode ? (
             <>

@@ -4,7 +4,7 @@ import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
-const VALID_KEYS = ['players', 'teams', 'skills'];
+const VALID_KEYS = ['players', 'teams', 'skills', 'starPlayers'];
 
 // GET /api/game-data/:key — public
 router.get('/:key', (req, res) => {

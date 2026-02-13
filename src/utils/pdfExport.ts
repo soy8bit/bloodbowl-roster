@@ -9,7 +9,7 @@ const allStarPlayers = starPlayersRaw as StarPlayerData[];
 export function exportRosterPdf(
   roster: Roster,
   team: TeamData,
-  skills: Record<string, { name: string; nameEs: string; category: string }>,
+  skills: Record<string, { name: string; nameEs: string; category: string; description: string; descriptionEs: string }>,
   lang: Lang = 'en',
 ): void {
   const t = getStrings(lang);
@@ -39,6 +39,67 @@ export function exportRosterPdf(
       </tr>`;
     })
     .join('\n');
+
+  // Collect all unique skill IDs from roster players
+  const skillIdSet = new Set<string>();
+  roster.players.forEach((p) => {
+    p.skills.forEach((id) => skillIdSet.add(String(id)));
+  });
+
+  // Collect skill names from star players (they use string names, not IDs)
+  const starSkillNames = new Set<string>();
+  (roster.starPlayers || []).forEach((sp) => {
+    const data = allStarPlayers.find((s) => s.name === sp.name);
+    if (data) {
+      data.skills.forEach((name) => starSkillNames.add(name));
+    }
+  });
+
+  // Build skills reference list: player skills by ID + star player skills by name match
+  const skillNameToEntry = new Map<string, { name: string; description: string }>();
+
+  // Add roster player skills (by ID)
+  skillIdSet.forEach((id) => {
+    const s = skills[id];
+    if (s) {
+      const name = lang === 'es' ? s.nameEs || s.name : s.name;
+      const desc = lang === 'es' ? s.descriptionEs || s.description : s.description;
+      skillNameToEntry.set(name, { name, description: desc });
+    }
+  });
+
+  // Add star player skills (by name match)
+  const skillEntries = Object.values(skills);
+  starSkillNames.forEach((skillName) => {
+    if (!skillNameToEntry.has(skillName)) {
+      const match = skillEntries.find((s) => s.name === skillName);
+      if (match) {
+        const name = lang === 'es' ? match.nameEs || match.name : match.name;
+        const desc = lang === 'es' ? match.descriptionEs || match.description : match.description;
+        skillNameToEntry.set(name, { name, description: desc });
+      }
+    }
+  });
+
+  const sortedSkills = Array.from(skillNameToEntry.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+  // Split into two columns
+  const mid = Math.ceil(sortedSkills.length / 2);
+  const col1 = sortedSkills.slice(0, mid);
+  const col2 = sortedSkills.slice(mid);
+
+  const renderSkillItem = (s: { name: string; description: string }) =>
+    `<div class="ref-skill"><span class="ref-skill-name">${s.name}</span><span class="ref-skill-desc">${s.description}</span></div>`;
+
+  const skillsRefPage = sortedSkills.length > 0 ? `
+<div class="skills-ref-page">
+  <h2 class="skills-ref-title">${lang === 'es' ? 'Referencia de Habilidades' : 'Skills Reference'}</h2>
+  <div class="skills-ref-grid">
+    <div class="skills-ref-col">${col1.map(renderSkillItem).join('\n')}</div>
+    <div class="skills-ref-col">${col2.map(renderSkillItem).join('\n')}</div>
+  </div>
+  <div class="footer">${t.pdfFooter}</div>
+</div>` : '';
 
   // Star players rows
   const starRows = (roster.starPlayers || []).map(sp => {
@@ -80,7 +141,7 @@ export function exportRosterPdf(
   .name { font-weight: 600; font-size: 14px; }
   .pos { color: #555; white-space: nowrap; font-size: 13px; }
   .star-row { background: #fff8e7 !important; }
-  .star-name { color: #8b6914; }
+  .star-name { color: #1a5276; }
   .staff-section { margin-bottom: 14px; }
   .staff-title { font-size: 16px; font-weight: 700; color: #2a2a2a; margin-bottom: 8px; border-bottom: 2px solid #8b0000; padding-bottom: 4px; }
   .staff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; font-size: 14px; }
@@ -89,6 +150,13 @@ export function exportRosterPdf(
   .summary-bar { display: flex; gap: 32px; font-size: 14px; margin-bottom: 10px; padding: 8px 12px; background: #f5f5f5; border-radius: 4px; }
   .summary-label { font-weight: 700; color: #555; margin-right: 4px; }
   .footer { margin-top: 20px; font-size: 11px; color: #999; text-align: center; border-top: 1px solid #ddd; padding-top: 10px; }
+  .skills-ref-page { page-break-before: always; padding-top: 12px; }
+  .skills-ref-title { font-size: 22px; color: #8b0000; margin-bottom: 14px; border-bottom: 2px solid #8b0000; padding-bottom: 6px; }
+  .skills-ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .skills-ref-col { display: flex; flex-direction: column; }
+  .ref-skill { margin-bottom: 8px; line-height: 1.35; }
+  .ref-skill-name { font-weight: 700; font-size: 12px; color: #2a2a2a; display: block; }
+  .ref-skill-desc { font-size: 11px; color: #444; display: block; }
   @media print {
     body { padding: 12px; }
     @page { margin: 14mm; }
@@ -139,6 +207,8 @@ export function exportRosterPdf(
 </div>
 
 <div class="footer">${t.pdfFooter}</div>
+
+${skillsRefPage}
 
 <script>window.onload = function() { window.print(); }</script>
 </body></html>`;
