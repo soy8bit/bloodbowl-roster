@@ -104,7 +104,22 @@ const strings = {
     // Other
     apoBadge: 'Apo',
     footerAuthor: 'by Hector del Baix',
-    footerRules: 'Blood Bowl Rules',
+
+    // Help
+    navHelp: 'Help',
+    helpTitle: 'Help',
+    helpRosterTitle: 'Building Your Roster',
+    helpRosterDesc: 'Select a team, then add players from the available positions. Each position has a maximum number of players. Your roster needs at least 11 players and can have up to 16.',
+    helpBudgetTitle: 'Budget & Team Value',
+    helpBudgetDesc: 'Your team starts with a budget of 1,000,000 gold. The Team Value (TV) is the sum of all players, rerolls, staff, star players and inducements. Tap the TV value to see the full breakdown.',
+    helpGameModeTitle: 'Game Mode',
+    helpGameModeDesc: 'Tap "Game Mode" in the header to switch to a read-only match view. Track score, turns, rerolls, and player status (OK/KO/BH/SI/Dead/Sent Off). Tap a player\'s status badge to cycle it. Swipe left on a player card to cycle status too. All game state persists if you refresh.',
+    helpStarsTitle: 'Star Players & Inducements',
+    helpStarsDesc: 'Star Players are hired mercenaries available based on your team\'s special rules. Inducements are one-off purchases like Wizards, Bribes, or Bloodweiser Kegs. Both add to your Team Value.',
+    helpSkillsTitle: 'Skills',
+    helpSkillsDesc: 'Tap any skill badge to see its full description. Skills are color-coded by category: Agility (green), General (blue), Mutation (purple), Passing (orange), Strength (red), and Traits (gray).',
+    helpExportTitle: 'Export & Import',
+    helpExportDesc: 'Export your roster as PDF for printing or as JSON to share/backup. Import a JSON file to load a previously saved roster.',
 
     // Summary
     teamValue: 'Team Value',
@@ -148,6 +163,28 @@ const strings = {
     needMinPlayers: (min: number, have: number) => `Need at least ${min} players (have ${have})`,
     tooManyRerolls: (have: number, max: number) => `Too many rerolls: ${have}/${max}`,
     tooManyPosition: (id: number, have: number, max: number) => `Too many of position ID ${id}: ${have}/${max}`,
+
+    // Game Mode
+    gameMode: 'Game Mode',
+    exitGameMode: 'Edit Mode',
+    gameResources: 'Resources',
+    gameStarPlayers: 'Star Players',
+    gameInducements: 'Inducements',
+    coach: 'Coach',
+    playerStatus: 'Status',
+    statusOk: 'OK',
+    statusKo: 'KO',
+    statusBh: 'BH',
+    statusSi: 'SI',
+    statusDead: 'Dead',
+    statusSent: 'Sent Off',
+    score: 'Score',
+    home: 'HOME',
+    away: 'AWAY',
+    turn: 'Turn',
+    half1: 'H1',
+    half2: 'H2',
+    available: 'Available',
 
     // PDF
     pdfTitle: 'Blood Bowl Roster',
@@ -266,7 +303,22 @@ const strings = {
     // Other
     apoBadge: 'Apo',
     footerAuthor: 'por Hector del Baix',
-    footerRules: 'Reglas Blood Bowl',
+
+    // Help
+    navHelp: 'Ayuda',
+    helpTitle: 'Ayuda',
+    helpRosterTitle: 'Construir tu Plantilla',
+    helpRosterDesc: 'Selecciona un equipo y añade jugadores de las posiciones disponibles. Cada posicion tiene un maximo de jugadores. Tu plantilla necesita al menos 11 jugadores y puede tener hasta 16.',
+    helpBudgetTitle: 'Presupuesto y Valor de Equipo',
+    helpBudgetDesc: 'Tu equipo empieza con un presupuesto de 1.000.000 de oro. El Valor de Equipo (TV) es la suma de todos los jugadores, repeticiones, staff, estrellas e incentivos. Toca el valor de TV para ver el desglose completo.',
+    helpGameModeTitle: 'Modo Juego',
+    helpGameModeDesc: 'Toca "Modo Juego" en la cabecera para cambiar a la vista de partido. Controla el marcador, turnos, repeticiones y estado de jugadores (OK/KO/BH/SI/Muerto/Expulsado). Toca el badge de estado para cambiarlo. Desliza a la izquierda sobre un jugador para cambiar su estado tambien. El estado del partido se mantiene si refrescas.',
+    helpStarsTitle: 'Jugadores Estrella e Incentivos',
+    helpStarsDesc: 'Los Jugadores Estrella son mercenarios disponibles segun las reglas especiales de tu equipo. Los Incentivos son compras puntuales como Magos, Sobornos o Barriles Bloodweiser. Ambos suman al Valor del Equipo.',
+    helpSkillsTitle: 'Habilidades',
+    helpSkillsDesc: 'Toca cualquier badge de habilidad para ver su descripcion. Las habilidades tienen colores por categoria: Agilidad (verde), General (azul), Mutacion (morado), Pase (naranja), Fuerza (rojo) y Rasgos (gris).',
+    helpExportTitle: 'Exportar e Importar',
+    helpExportDesc: 'Exporta tu plantilla como PDF para imprimir o como JSON para compartir/respaldar. Importa un archivo JSON para cargar una plantilla guardada.',
 
     // Summary
     teamValue: 'Valor del Equipo',
@@ -310,6 +362,28 @@ const strings = {
     needMinPlayers: (min: number, have: number) => `Necesitas al menos ${min} jugadores (tienes ${have})`,
     tooManyRerolls: (have: number, max: number) => `Demasiadas repeticiones: ${have}/${max}`,
     tooManyPosition: (id: number, have: number, max: number) => `Demasiados en posicion ID ${id}: ${have}/${max}`,
+
+    // Game Mode
+    gameMode: 'Modo Juego',
+    exitGameMode: 'Modo Edicion',
+    gameResources: 'Recursos',
+    gameStarPlayers: 'Jugadores Estrella',
+    gameInducements: 'Incentivos',
+    coach: 'Coach',
+    playerStatus: 'Estado',
+    statusOk: 'OK',
+    statusKo: 'KO',
+    statusBh: 'BH',
+    statusSi: 'SI',
+    statusDead: 'Muerto',
+    statusSent: 'Expulsado',
+    score: 'Marcador',
+    home: 'LOCAL',
+    away: 'VISIT',
+    turn: 'Turno',
+    half1: 'H1',
+    half2: 'H2',
+    available: 'Disponibles',
 
     // PDF
     pdfTitle: 'Blood Bowl Roster',

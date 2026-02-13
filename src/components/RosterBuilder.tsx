@@ -4,6 +4,7 @@ import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
 import BudgetBar from './BudgetBar';
 import BuilderTabs from './BuilderTabs';
+import GameView from './GameView';
 import SkillModal from './SkillModal';
 
 interface RosterActions {
@@ -41,6 +42,7 @@ export default function RosterBuilder({
   rosterActions,
   onBack,
 }: Props) {
+  const [gameMode, setGameMode] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState<{ name: string; nameEs: string; category: string; description: string; descriptionEs: string } | null>(null);
   const [pendingRemoval, setPendingRemoval] = useState<{ uid: string; position: string } | null>(null);
   const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,20 +102,31 @@ export default function RosterBuilder({
       <div className="builder-header">
         <button className="btn-back" onClick={onBack}>&larr; {t.back}</button>
         <div className="team-info">
-          <input
-            type="text"
-            className="team-name-input"
-            placeholder={t.teamNamePlaceholder}
-            value={roster.name}
-            onChange={(e) => rosterActions.setName(e.target.value)}
-          />
-          <input
-            type="text"
-            className="coach-name-input"
-            placeholder={t.coachNamePlaceholder}
-            value={roster.coachName || ''}
-            onChange={(e) => rosterActions.setCoachName(e.target.value)}
-          />
+          {gameMode ? (
+            <>
+              <span className="team-name-display">{roster.name || team.name}</span>
+              {roster.coachName && (
+                <span className="coach-name-display">{roster.coachName}</span>
+              )}
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                className="team-name-input"
+                placeholder={t.teamNamePlaceholder}
+                value={roster.name}
+                onChange={(e) => rosterActions.setName(e.target.value)}
+              />
+              <input
+                type="text"
+                className="coach-name-input"
+                placeholder={t.coachNamePlaceholder}
+                value={roster.coachName || ''}
+                onChange={(e) => rosterActions.setCoachName(e.target.value)}
+              />
+            </>
+          )}
           <div className="team-meta">
             <span className="team-type">{team.name}</span>
             {team.specialRules.length > 0 && (
@@ -121,21 +134,33 @@ export default function RosterBuilder({
             )}
           </div>
         </div>
+        <button
+          className={`btn-game-mode ${gameMode ? 'active' : ''}`}
+          onClick={() => setGameMode(!gameMode)}
+        >
+          {gameMode ? t.exitGameMode : t.gameMode}
+        </button>
       </div>
 
-      <BudgetBar roster={roster} team={team} />
+      {gameMode ? (
+        <GameView roster={roster} team={team} skills={skills} onSkillClick={handleSkillClick} />
+      ) : (
+        <>
+          <BudgetBar roster={roster} team={team} />
 
-      <BuilderTabs
-        roster={roster}
-        team={team}
-        playerMap={playerMap}
-        skills={skills}
-        rosterActions={rosterActions}
-        displayedPlayers={displayedPlayers}
-        onAddPlayer={handleAddPlayer}
-        onRemovePlayer={handleRemovePlayer}
-        onSkillClick={handleSkillClick}
-      />
+          <BuilderTabs
+            roster={roster}
+            team={team}
+            playerMap={playerMap}
+            skills={skills}
+            rosterActions={rosterActions}
+            displayedPlayers={displayedPlayers}
+            onAddPlayer={handleAddPlayer}
+            onRemovePlayer={handleRemovePlayer}
+            onSkillClick={handleSkillClick}
+          />
+        </>
+      )}
 
       <SkillModal skill={selectedSkill} onClose={() => setSelectedSkill(null)} />
     </div>

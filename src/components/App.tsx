@@ -12,6 +12,7 @@ import SavedRosters from './SavedRosters';
 import SkillsPage from './SkillsPage';
 import LoginPage from './auth/LoginPage';
 import AdminLayout from './admin/AdminLayout';
+import HelpModal from './HelpModal';
 import type { TeamData, PlayerData } from '../types';
 import teamsRaw from '../data/teams.json';
 import playersRaw from '../data/players.json';
@@ -125,6 +126,7 @@ function MainApp() {
 function AppContent() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const { lang, setLang, t } = useLang();
   const toastState = useToastState();
   const { user, logout } = useAuth();
@@ -224,6 +226,9 @@ function AppContent() {
                     {t.navAdmin}
                   </button>
                 )}
+                <button className="dropdown-item" onClick={() => { setHelpOpen(true); setMenuOpen(false); }}>
+                  {t.navHelp}
+                </button>
                 <div className="dropdown-divider" />
                 {user ? (
                   <button className="dropdown-item" onClick={() => { logout(); setMenuOpen(false); }}>
@@ -255,10 +260,8 @@ function AppContent() {
           <span className="footer-author">{t.footerAuthor}</span>
           <span className="footer-version">v1.0.0</span>
         </div>
-        <div className="footer-links">
-          <a href="https://www.bloodbowl.com/rules" target="_blank" rel="noopener noreferrer">{t.footerRules}</a>
-        </div>
       </footer>
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
       <ToastList />
     </div>
     </ToastContext.Provider>

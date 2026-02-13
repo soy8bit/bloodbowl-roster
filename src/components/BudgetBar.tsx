@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import type { Roster, TeamData } from '../types';
 import { calculateTVBreakdown, formatGold, validateRoster } from '../utils/rosterUtils';
 import { useLang } from '../i18n';
+import InfoButton from './InfoButton';
 
 interface Props {
   roster: Roster;
@@ -51,6 +52,7 @@ export default function BudgetBar({ roster, team }: Props) {
             />
           </div>
         </div>
+        <InfoButton text={t.helpBudgetDesc} />
       </div>
 
       <AnimatePresence>
