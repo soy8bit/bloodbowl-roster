@@ -52,6 +52,7 @@ const strings = {
     players: 'Players',
     min11: '(min 11)',
     exportPdf: 'Export PDF',
+    exportJson: 'Export JSON',
     import_: 'Import',
     importFailed: 'Import failed',
 
@@ -147,6 +148,7 @@ const strings = {
     players: 'Jugadores',
     min11: '(min 11)',
     exportPdf: 'Exportar PDF',
+    exportJson: 'Exportar JSON',
     import_: 'Importar',
     importFailed: 'Error al importar',
 

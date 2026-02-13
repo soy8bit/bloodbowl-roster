@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.nufflezone.com)",
+      "WebSearch",
+      "WebFetch(domain:nufflezone.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:bbroster.com)",
+      "WebFetch(domain:alexholker.github.io)",
+      "Bash(gh api:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl:*)",
+      "Bash(dir:*)",
+      "Bash(npm install:*)",
+      "Bash(where:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npx tsc:*)",
+      "Bash(npx vite build)",
+      "Bash(node -e:*)",
+      "Bash(npx vite:*)",
+      "Bash(npm run dev:*)",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\" install motion)",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" tsc --noEmit)",
+      "Bash(powershell:*)",
+      "Bash(del \"C:\\\\Users\\\\hsm80\\\\fix_path.ps1\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)"
+    ]
+  }
+}

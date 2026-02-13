@@ -1,6 +1,6 @@
 import type { Roster, TeamData } from '../types';
 import { calculateTeamValue, validateRoster, formatGold } from '../utils/rosterUtils';
-import { importRoster } from '../utils/exportImport';
+import { exportRoster, importRoster } from '../utils/exportImport';
 import { exportRosterPdf } from '../utils/pdfExport';
 import { useLang } from '../i18n';
 
@@ -149,6 +149,9 @@ export default function RosterSummary({
           onClick={() => exportRosterPdf(roster, team, skills, lang)}
         >
           {t.exportPdf}
+        </button>
+        <button className="btn-secondary" onClick={() => exportRoster(roster)}>
+          {t.exportJson}
         </button>
         <button className="btn-secondary" onClick={handleImport}>
           {t.import_}
