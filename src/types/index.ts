@@ -46,12 +46,46 @@ export interface RosterPlayer {
   skills: number[];
 }
 
+export interface StarPlayerData {
+  name: string;
+  cost: number;
+  MA: number;
+  ST: number;
+  AG: number;
+  PA: number;
+  AV: number;
+  skills: string[];
+  teams: string[];
+}
+
+export interface InducementData {
+  id: string;
+  name: string;
+  nameEs: string;
+  cost: number;
+  max: number;
+}
+
+export interface RosterStarPlayer {
+  uid: string;
+  name: string;
+  cost: number;
+}
+
+export interface RosterInducement {
+  id: string;
+  quantity: number;
+}
+
 export interface Roster {
   id: string;
   name: string;
+  coachName: string;
   teamId: string;
   teamName: string;
   players: RosterPlayer[];
+  starPlayers: RosterStarPlayer[];
+  inducements: RosterInducement[];
   rerolls: number;
   assistantCoaches: number;
   cheerleaders: number;

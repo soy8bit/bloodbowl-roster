@@ -2,6 +2,7 @@ import type { Roster, TeamData } from '../types';
 import { calculateTeamValue, validateRoster, formatGold } from '../utils/rosterUtils';
 import { exportRoster, importRoster } from '../utils/exportImport';
 import { exportRosterPdf } from '../utils/pdfExport';
+import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
 
 interface Props {
@@ -31,6 +32,7 @@ export default function RosterSummary({
 }: Props) {
   const tv = calculateTeamValue(roster, team);
   const { lang, t } = useLang();
+  const { showToast } = useToast();
   const validation = validateRoster(roster, team, lang);
 
   const handleImport = async () => {
@@ -43,11 +45,22 @@ export default function RosterSummary({
       try {
         const imported = await importRoster(file);
         onImport(imported);
+        showToast(t.importSuccess, 'success');
       } catch (err) {
-        alert(err instanceof Error ? err.message : t.importFailed);
+        showToast(err instanceof Error ? err.message : t.importFailed, 'error');
       }
     };
     input.click();
+  };
+
+  const handleExportPdf = () => {
+    exportRosterPdf(roster, team, skills, lang);
+    showToast(t.exportSuccess, 'info');
+  };
+
+  const handleExportJson = () => {
+    exportRoster(roster);
+    showToast(t.exportSuccess, 'info');
   };
 
   return (
@@ -146,11 +159,11 @@ export default function RosterSummary({
       <div className="summary-actions">
         <button
           className="btn-primary btn-pdf"
-          onClick={() => exportRosterPdf(roster, team, skills, lang)}
+          onClick={handleExportPdf}
         >
           {t.exportPdf}
         </button>
-        <button className="btn-secondary" onClick={() => exportRoster(roster)}>
+        <button className="btn-secondary" onClick={handleExportJson}>
           {t.exportJson}
         </button>
         <button className="btn-secondary" onClick={handleImport}>

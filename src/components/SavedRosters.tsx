@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import type { SavedRosterMeta, TeamData } from '../types';
 import { exportRoster, importRoster } from '../utils/exportImport';
+import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
+import ConfirmModal from './ConfirmModal';
 
 interface RosterStore {
   deleteRoster: (id: string) => void;
@@ -18,6 +21,8 @@ interface Props {
 
 export default function SavedRosters({ rosters, allRosters, onLoad, onNew }: Props) {
   const { lang, t } = useLang();
+  const { showToast } = useToast();
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
 
   const handleImport = async () => {
     const input = document.createElement('input');
@@ -29,16 +34,22 @@ export default function SavedRosters({ rosters, allRosters, onLoad, onNew }: Pro
       try {
         const imported = await importRoster(file);
         allRosters.importRoster(imported);
+        showToast(t.importSuccess, 'success');
       } catch (err) {
-        alert(err instanceof Error ? err.message : t.importFailed);
+        showToast(err instanceof Error ? err.message : t.importFailed, 'error');
       }
     };
     input.click();
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(t.deleteConfirm(name))) {
-      allRosters.deleteRoster(id);
+    setConfirmDelete({ id, name });
+  };
+
+  const confirmDeleteAction = () => {
+    if (confirmDelete) {
+      allRosters.deleteRoster(confirmDelete.id);
+      setConfirmDelete(null);
     }
   };
 
@@ -74,7 +85,13 @@ export default function SavedRosters({ rosters, allRosters, onLoad, onNew }: Pro
         <div className="saved-list">
           {rosters.map((r) => (
             <div key={r.id} className="saved-card">
-              <div className="saved-card-info" onClick={() => onLoad(r.id)}>
+              <div
+                className="saved-card-info"
+                onClick={() => onLoad(r.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onLoad(r.id); } }}
+              >
                 <div className="saved-card-name">{r.name || t.unnamed}</div>
                 <div className="saved-card-meta">
                   <span>{r.teamName}</span>
@@ -94,6 +111,17 @@ export default function SavedRosters({ rosters, allRosters, onLoad, onNew }: Pro
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        open={confirmDelete !== null}
+        title={t.delete_}
+        message={confirmDelete ? t.deleteConfirm(confirmDelete.name) : ''}
+        confirmText={t.remove}
+        cancelText={t.cancel}
+        onConfirm={confirmDeleteAction}
+        onCancel={() => setConfirmDelete(null)}
+        variant="danger"
+      />
     </div>
   );
 }

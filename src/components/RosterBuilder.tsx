@@ -1,14 +1,14 @@
-import { useState, useCallback } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { useState, useCallback, useRef } from 'react';
 import type { Roster, TeamData, PlayerData } from '../types';
+import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
-import PlayerRow from './PlayerRow';
-import AvailablePlayers from './AvailablePlayers';
-import RosterSummary from './RosterSummary';
+import BudgetBar from './BudgetBar';
+import BuilderTabs from './BuilderTabs';
 import SkillModal from './SkillModal';
 
 interface RosterActions {
   setName: (name: string) => void;
+  setCoachName: (name: string) => void;
   addPlayer: (player: PlayerData, team: TeamData) => void;
   removePlayer: (uid: string) => void;
   setPlayerName: (uid: string, name: string) => void;
@@ -19,6 +19,9 @@ interface RosterActions {
   setApothecary: (v: boolean) => void;
   setTreasury: (n: number) => void;
   importRoster: (roster: Roster) => void;
+  addStarPlayer: (name: string, cost: number) => void;
+  removeStarPlayer: (uid: string) => void;
+  setInducement: (id: string, quantity: number) => void;
 }
 
 interface Props {
@@ -38,15 +41,59 @@ export default function RosterBuilder({
   rosterActions,
   onBack,
 }: Props) {
-  const [showAvailable, setShowAvailable] = useState(true);
   const [selectedSkill, setSelectedSkill] = useState<{ name: string; nameEs: string; category: string; description: string; descriptionEs: string } | null>(null);
-  const statLabels = ['MA', 'ST', 'AG', 'PA', 'AV'];
-  const { lang, t } = useLang();
+  const [pendingRemoval, setPendingRemoval] = useState<{ uid: string; position: string } | null>(null);
+  const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { t } = useLang();
+  const { showToast } = useToast();
 
   const handleSkillClick = useCallback((skillId: number) => {
     const s = skills[String(skillId)];
     if (s) setSelectedSkill(s);
   }, [skills]);
+
+  const handleAddPlayer = useCallback((p: PlayerData) => {
+    rosterActions.addPlayer(p, team);
+    showToast(t.playerAdded(p.position), 'success');
+  }, [rosterActions, team, showToast, t]);
+
+  const handleRemovePlayer = useCallback((uid: string) => {
+    const player = roster.players.find((p) => p.uid === uid);
+    if (!player) return;
+
+    // Cancel any existing pending removal
+    if (pendingTimerRef.current) {
+      clearTimeout(pendingTimerRef.current);
+      if (pendingRemoval) {
+        rosterActions.removePlayer(pendingRemoval.uid);
+      }
+    }
+
+    setPendingRemoval({ uid, position: player.position });
+
+    const timer = setTimeout(() => {
+      rosterActions.removePlayer(uid);
+      setPendingRemoval(null);
+      pendingTimerRef.current = null;
+    }, 5000);
+    pendingTimerRef.current = timer;
+
+    showToast(t.playerRemoved(player.position), 'info', {
+      action: {
+        label: t.undoRemove,
+        onClick: () => {
+          clearTimeout(timer);
+          setPendingRemoval(null);
+          pendingTimerRef.current = null;
+        },
+      },
+      duration: 5000,
+    });
+  }, [roster.players, rosterActions, showToast, t, pendingRemoval]);
+
+  const displayedPlayers = pendingRemoval
+    ? roster.players.filter((p) => p.uid !== pendingRemoval.uid)
+    : roster.players;
 
   return (
     <div className="roster-builder">
@@ -60,6 +107,13 @@ export default function RosterBuilder({
             value={roster.name}
             onChange={(e) => rosterActions.setName(e.target.value)}
           />
+          <input
+            type="text"
+            className="coach-name-input"
+            placeholder={t.coachNamePlaceholder}
+            value={roster.coachName || ''}
+            onChange={(e) => rosterActions.setCoachName(e.target.value)}
+          />
           <div className="team-meta">
             <span className="team-type">{team.name}</span>
             {team.specialRules.length > 0 && (
@@ -69,100 +123,19 @@ export default function RosterBuilder({
         </div>
       </div>
 
-      <div className="builder-content">
-        <div className="builder-main">
-          {/* Available players FIRST so roster grows below without pushing it */}
-          <div className="available-section">
-            <button
-              className="toggle-available"
-              onClick={() => setShowAvailable(!showAvailable)}
-            >
-              {showAvailable ? t.hideAvailable : t.showAvailable}
-            </button>
-            <AnimatePresence initial={false}>
-              {showAvailable && (
-                <motion.div
-                  key="available-players"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  style={{ overflow: 'hidden' }}
-                >
-                  <AvailablePlayers
-                    team={team}
-                    roster={roster}
-                    playerMap={playerMap}
-                    skills={skills}
-                    onAdd={(p) => rosterActions.addPlayer(p, team)}
-                    onSkillClick={handleSkillClick}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+      <BudgetBar roster={roster} team={team} />
 
-          <div className="roster-section">
-            <div className="section-header">
-              <h3 className="section-subtitle">{t.roster} ({roster.players.length}/16)</h3>
-            </div>
-            <div className="table-wrapper">
-              <table className="roster-table current-roster">
-                <thead>
-                  <tr>
-                    <th className="col-num-h">#</th>
-                    <th className="col-name-h">{t.name}</th>
-                    <th className="col-pos-h">{t.position}</th>
-                    {statLabels.map((l) => (
-                      <th key={l} className="col-stat-h">{l}</th>
-                    ))}
-                    <th>{t.skills}</th>
-                    <th>{t.cost}</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <AnimatePresence initial={false}>
-                  <tbody>
-                    {roster.players.map((player, i) => (
-                      <PlayerRow
-                        key={player.uid}
-                        player={player}
-                        index={i}
-                        skills={skills}
-                        onRemove={rosterActions.removePlayer}
-                        onNameChange={rosterActions.setPlayerName}
-                        onSkillClick={handleSkillClick}
-                      />
-                    ))}
-                    {roster.players.length === 0 && (
-                      <tr>
-                        <td colSpan={10} className="empty-roster">
-                          {t.addPlayersHint}
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </AnimatePresence>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div className="builder-sidebar">
-          <RosterSummary
-            roster={roster}
-            team={team}
-            skills={skills}
-            onRerolls={rosterActions.setRerolls}
-            onCoaches={rosterActions.setAssistantCoaches}
-            onCheerleaders={rosterActions.setCheerleaders}
-            onFans={rosterActions.setDedicatedFans}
-            onApothecary={rosterActions.setApothecary}
-            onTreasury={rosterActions.setTreasury}
-            onImport={rosterActions.importRoster}
-          />
-        </div>
-      </div>
+      <BuilderTabs
+        roster={roster}
+        team={team}
+        playerMap={playerMap}
+        skills={skills}
+        rosterActions={rosterActions}
+        displayedPlayers={displayedPlayers}
+        onAddPlayer={handleAddPlayer}
+        onRemovePlayer={handleRemovePlayer}
+        onSkillClick={handleSkillClick}
+      />
 
       <SkillModal skill={selectedSkill} onClose={() => setSelectedSkill(null)} />
     </div>

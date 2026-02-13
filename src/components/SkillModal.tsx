@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { categoryClass } from '../utils/skillUtils';
 import { useLang } from '../i18n';
 
 interface SkillData {
@@ -14,16 +15,6 @@ interface Props {
   skill: SkillData | null;
   onClose: () => void;
 }
-
-const categoryClass: Record<string, string> = {
-  A: 'skill-a',
-  G: 'skill-g',
-  M: 'skill-m',
-  P: 'skill-p',
-  S: 'skill-s',
-  T: 'skill-t',
-  NA: 'skill-t',
-};
 
 function useIsMobile(breakpoint = 600) {
   const [mobile, setMobile] = useState(
@@ -92,6 +83,9 @@ export default function SkillModal({ skill, onClose }: Props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="skill-modal-title"
         >
           <motion.div
             className="skill-modal"
@@ -103,9 +97,9 @@ export default function SkillModal({ skill, onClose }: Props) {
             <div className="skill-modal-header">
               <div className="skill-modal-title">
                 <span className={`skill-badge ${cat}`}>{catName}</span>
-                <h3>{displayName}</h3>
+                <h3 id="skill-modal-title">{displayName}</h3>
               </div>
-              <button className="skill-modal-close" onClick={onClose}>
+              <button className="skill-modal-close" onClick={onClose} aria-label={t.close}>
                 &times;
               </button>
             </div>

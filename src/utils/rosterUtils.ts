@@ -1,4 +1,5 @@
-import type { Roster, RosterPlayer, TeamData, PlayerData } from '../types';
+import type { Roster, RosterPlayer, TeamData, PlayerData, InducementData } from '../types';
+import inducementsData from '../data/inducements.json';
 import { getStrings, type Lang } from '../i18n';
 
 const ASSISTANT_COACH_COST = 10;
@@ -8,15 +9,35 @@ const APOTHECARY_COST = 50;
 const MAX_PLAYERS = 16;
 const MIN_PLAYERS = 11;
 
-export function calculateTeamValue(roster: Roster, team: TeamData): number {
-  const playerCosts = roster.players.reduce((sum, p) => sum + p.cost, 0);
-  const rerollCosts = roster.rerolls * team.reroll.cost;
-  const staffCosts =
+const inducementMap = new Map((inducementsData as InducementData[]).map(i => [i.id, i]));
+
+export interface TVBreakdown {
+  players: number;
+  stars: number;
+  inducements: number;
+  rerolls: number;
+  staff: number;
+  total: number;
+}
+
+export function calculateTVBreakdown(roster: Roster, team: TeamData): TVBreakdown {
+  const players = roster.players.reduce((sum, p) => sum + p.cost, 0);
+  const stars = (roster.starPlayers || []).reduce((sum, sp) => sum + sp.cost, 0);
+  const inducements = (roster.inducements || []).reduce((sum, ind) => {
+    const data = inducementMap.get(ind.id);
+    return sum + (data ? data.cost * ind.quantity : 0);
+  }, 0);
+  const rerolls = roster.rerolls * team.reroll.cost;
+  const staff =
     roster.assistantCoaches * ASSISTANT_COACH_COST +
     roster.cheerleaders * CHEERLEADER_COST +
     roster.dedicatedFans * DEDICATED_FANS_COST +
     (roster.apothecary ? APOTHECARY_COST : 0);
-  return playerCosts + rerollCosts + staffCosts;
+  return { players, stars, inducements, rerolls, staff, total: players + stars + inducements + rerolls + staff };
+}
+
+export function calculateTeamValue(roster: Roster, team: TeamData): number {
+  return calculateTVBreakdown(roster, team).total;
 }
 
 export function getPositionCount(roster: Roster, playerId: number): number {
@@ -98,9 +119,12 @@ export function createEmptyRoster(team: TeamData): Roster {
   return {
     id: generateId(),
     name: '',
+    coachName: '',
     teamId: team.id,
     teamName: team.name,
     players: [],
+    starPlayers: [],
+    inducements: [],
     rerolls: 0,
     assistantCoaches: 0,
     cheerleaders: 0,

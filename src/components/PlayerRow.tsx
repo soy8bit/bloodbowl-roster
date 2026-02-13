@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import type { RosterPlayer } from '../types';
 import { formatStat } from '../utils/rosterUtils';
+import { categoryClass } from '../utils/skillUtils';
 import { useLang } from '../i18n';
 
 interface Props {
@@ -11,16 +12,6 @@ interface Props {
   onNameChange: (uid: string, name: string) => void;
   onSkillClick: (skillId: number) => void;
 }
-
-const categoryClass: Record<string, string> = {
-  A: 'skill-a',
-  G: 'skill-g',
-  M: 'skill-m',
-  P: 'skill-p',
-  S: 'skill-s',
-  T: 'skill-t',
-  NA: 'skill-t',
-};
 
 export default function PlayerRow({ player, index, skills, onRemove, onNameChange, onSkillClick }: Props) {
   const statLabels = ['MA', 'ST', 'AG', 'PA', 'AV'];
@@ -61,6 +52,9 @@ export default function PlayerRow({ player, index, skills, onRemove, onNameChang
                 key={skillId}
                 className={`skill-badge clickable ${categoryClass[skill.category] || 'skill-t'}`}
                 onClick={() => onSkillClick(skillId)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSkillClick(skillId); } }}
               >
                 {lang === 'es' ? skill.nameEs : skill.name}
               </span>

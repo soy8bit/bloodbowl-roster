@@ -1,0 +1,14 @@
+[
+  {"id":"bloodweiser","name":"Bloodweiser Kegs","nameEs":"Barriles Bloodweiser","cost":50,"max":2},
+  {"id":"bribe","name":"Bribes","nameEs":"Sobornos","cost":100,"max":3},
+  {"id":"wandering_apo","name":"Wandering Apothecary","nameEs":"Boticario Errante","cost":100,"max":1},
+  {"id":"mortuary_assistant","name":"Mortuary Assistant","nameEs":"Asistente de Morgue","cost":100,"max":1},
+  {"id":"plague_doctor","name":"Plague Doctor","nameEs":"Doctor de la Peste","cost":100,"max":1},
+  {"id":"riotous_rookies","name":"Riotous Rookies","nameEs":"Novatos Revoltosos","cost":100,"max":1},
+  {"id":"halfling_master_chef","name":"Halfling Master Chef","nameEs":"Maestro Chef Halfling","cost":300,"max":1},
+  {"id":"wizard","name":"Wizard","nameEs":"Mago","cost":150,"max":1},
+  {"id":"biased_ref","name":"Biased Referee","nameEs":"Árbitro Parcial","cost":120,"max":1},
+  {"id":"weather_mage","name":"Weather Mage","nameEs":"Mago del Clima","cost":30,"max":1},
+  {"id":"extra_training","name":"Extra Team Training","nameEs":"Entrenamiento Extra","cost":100,"max":4},
+  {"id":"temp_agency_rookies","name":"Temp Agency Rookies","nameEs":"Novatos de Agencia","cost":50,"max":3}
+]

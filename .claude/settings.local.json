@@ -36,7 +36,10 @@
       "Bash(git push:*)",
       "Bash(git remote:*)",
       "Bash(npx tsx:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "WebFetch(domain:www.dadidimerda.it)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs"
     ]
   }
 }

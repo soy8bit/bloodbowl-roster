@@ -3,7 +3,9 @@ import { Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-
 import { AnimatePresence, motion } from 'motion/react';
 import { useRoster } from '../hooks/useRoster';
 import { useAuth } from '../hooks/useAuth';
+import { ToastContext, useToastState } from '../hooks/useToast';
 import { LanguageProvider, useLang } from '../i18n';
+import ToastList from './Toast';
 import TeamSelector from './TeamSelector';
 import RosterBuilder from './RosterBuilder';
 import SavedRosters from './SavedRosters';
@@ -124,6 +126,7 @@ function AppContent() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, setLang, t } = useLang();
+  const toastState = useToastState();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -168,6 +171,7 @@ function AppContent() {
   };
 
   return (
+    <ToastContext.Provider value={toastState}>
     <div className="app">
       <header className="app-header">
         <h1 className="app-title" onClick={() => navTo('/')}>{t.appTitle}</h1>
@@ -193,36 +197,41 @@ function AppContent() {
             <button
               className={`hamburger-btn ${menuOpen ? 'open' : ''}`}
               onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Menu"
+              aria-label={t.navMenu}
+              aria-expanded={menuOpen}
+              aria-controls="nav-dropdown"
             >
               <span className="hamburger-line" />
               <span className="hamburger-line" />
               <span className="hamburger-line" />
             </button>
             {menuOpen && (
-              <nav className="dropdown-menu">
+              <nav className="dropdown-menu" id="nav-dropdown">
                 <button className={`dropdown-item ${isHome ? 'active' : ''}`} onClick={() => navTo('/')}>
+                  {t.navHome}
+                </button>
+                <button className="dropdown-item" onClick={() => navTo('/')}>
                   {t.newTeam}
                 </button>
                 <button className="dropdown-item" onClick={() => { navTo('/?v=saved'); }}>
                   {t.savedRosters}
                 </button>
                 <button className={`dropdown-item ${isSkillsRoute ? 'active' : ''}`} onClick={() => navTo('/skills')}>
-                  Skills
+                  {t.navSkills}
                 </button>
                 {user?.isAdmin && (
                   <button className={`dropdown-item ${isAdminRoute ? 'active' : ''}`} onClick={() => navTo('/admin')}>
-                    Admin
+                    {t.navAdmin}
                   </button>
                 )}
                 <div className="dropdown-divider" />
                 {user ? (
                   <button className="dropdown-item" onClick={() => { logout(); setMenuOpen(false); }}>
-                    Logout ({user.email})
+                    {t.navLogout(user.email)}
                   </button>
                 ) : (
                   <button className={`dropdown-item ${isLoginRoute ? 'active' : ''}`} onClick={() => navTo('/login')}>
-                    Login
+                    {t.navLogin}
                   </button>
                 )}
               </nav>
@@ -241,9 +250,18 @@ function AppContent() {
       </main>
 
       <footer className="app-footer">
-        <span>by Héctor del Baix</span>
+        <div className="footer-brand">
+          <span className="footer-app-name">{t.appTitle}</span>
+          <span className="footer-author">{t.footerAuthor}</span>
+          <span className="footer-version">v1.0.0</span>
+        </div>
+        <div className="footer-links">
+          <a href="https://www.bloodbowl.com/rules" target="_blank" rel="noopener noreferrer">{t.footerRules}</a>
+        </div>
       </footer>
+      <ToastList />
     </div>
+    </ToastContext.Provider>
   );
 }
 

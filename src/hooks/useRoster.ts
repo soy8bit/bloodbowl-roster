@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import type { Roster, TeamData, PlayerData, SavedRosterMeta } from '../types';
+import type { Roster, TeamData, PlayerData, SavedRosterMeta, RosterStarPlayer, RosterInducement } from '../types';
 import {
   createEmptyRoster,
   createRosterPlayer,
@@ -77,6 +77,11 @@ export function useRoster() {
     [updateRoster],
   );
 
+  const setCoachName = useCallback(
+    (coachName: string) => updateRoster((r) => ({ ...r, coachName })),
+    [updateRoster],
+  );
+
   const addPlayer = useCallback(
     (playerData: PlayerData, team: TeamData) => {
       updateRoster((roster) => {
@@ -142,6 +147,43 @@ export function useRoster() {
     [updateRoster],
   );
 
+  const addStarPlayer = useCallback(
+    (name: string, cost: number) => {
+      updateRoster((r) => ({
+        ...r,
+        starPlayers: [...(r.starPlayers || []), { uid: Date.now().toString(36) + Math.random().toString(36).substring(2, 9), name, cost }],
+      }));
+    },
+    [updateRoster],
+  );
+
+  const removeStarPlayer = useCallback(
+    (uid: string) => {
+      updateRoster((r) => ({
+        ...r,
+        starPlayers: (r.starPlayers || []).filter((sp) => sp.uid !== uid),
+      }));
+    },
+    [updateRoster],
+  );
+
+  const setInducement = useCallback(
+    (id: string, quantity: number) => {
+      updateRoster((r) => {
+        const inducements = [...(r.inducements || [])];
+        const idx = inducements.findIndex((i) => i.id === id);
+        if (quantity <= 0) {
+          if (idx >= 0) inducements.splice(idx, 1);
+        } else {
+          if (idx >= 0) inducements[idx] = { id, quantity };
+          else inducements.push({ id, quantity });
+        }
+        return { ...r, inducements };
+      });
+    },
+    [updateRoster],
+  );
+
   const goBack = useCallback(() => {
     setCurrentId(null);
   }, [setCurrentId]);
@@ -168,6 +210,7 @@ export function useRoster() {
     importRoster,
     goBack,
     setName,
+    setCoachName,
     addPlayer,
     removePlayer,
     setPlayerName,
@@ -177,6 +220,9 @@ export function useRoster() {
     setDedicatedFans,
     setApothecary,
     setTreasury,
+    addStarPlayer,
+    removeStarPlayer,
+    setInducement,
     savedRostersList,
     calculateTeamValue,
     validateRoster,

@@ -5,11 +5,19 @@ export type Lang = 'en' | 'es';
 const strings = {
   en: {
     // Header
-    appTitle: 'Blood Bowl Roster',
+    appTitle: 'BB Roster Maker',
     newTeam: 'New Team',
     savedRosters: 'Saved Rosters',
     switchToLight: 'Switch to light mode',
     switchToDark: 'Switch to dark mode',
+
+    // Navigation
+    navHome: 'Home',
+    navSkills: 'Skills',
+    navAdmin: 'Admin',
+    navLogin: 'Login',
+    navLogout: (email: string) => `Logout (${email})`,
+    navMenu: 'Menu',
 
     // Team selector
     chooseTeam: 'Choose Your Team',
@@ -26,6 +34,7 @@ const strings = {
     // Roster builder
     back: 'Back',
     teamNamePlaceholder: 'Team Name',
+    coachNamePlaceholder: 'Coach Name',
     hideAvailable: 'Hide Available Players',
     showAvailable: 'Show Available Players',
     roster: 'Roster',
@@ -39,6 +48,63 @@ const strings = {
     none: 'None',
     addPlayer: 'Add player',
     removePlayer: 'Remove player',
+
+    // Star Players
+    starPlayers: 'Star Players',
+    searchStar: 'Search star player...',
+    alreadyHired: 'Already hired',
+    hire: 'Hire',
+    noStarsAvailable: 'No star players available',
+
+    // Inducements
+    inducements: 'Inducements',
+
+    // Tabs builder
+    tabRoster: 'Roster',
+    tabStarPlayers: 'Stars',
+    tabInducements: 'Inducements',
+    tabStaff: 'Staff & Config',
+
+    // Budget bar
+    budgetLabel: 'Budget',
+    tvBreakdown: 'TV Breakdown',
+    tvPlayers: 'Players',
+    tvStars: 'Stars',
+    tvInducements: 'Inducements',
+    tvRerolls: 'Rerolls',
+    tvStaff: 'Staff',
+
+    // Toast/feedback
+    playerAdded: (pos: string) => `${pos} added to roster`,
+    playerRemoved: (pos: string) => `${pos} removed`,
+    exportSuccess: 'Export completed',
+    importSuccess: 'Roster imported successfully',
+    undoRemove: 'Undo',
+
+    // Confirm modal
+    cancel: 'Cancel',
+    confirmRemovePlayer: (pos: string) => `Remove ${pos} from roster?`,
+    remove: 'Remove',
+    close: 'Close',
+
+    // Empty states
+    emptyRosterHeading: 'No Players Yet',
+    emptyRosterHint: 'Add players from the available positions above to build your team.',
+
+    // Accessibility
+    ariaIncreaseRerolls: 'Increase rerolls',
+    ariaDecreaseRerolls: 'Decrease rerolls',
+    ariaIncreaseCoaches: 'Increase assistant coaches',
+    ariaDecreaseCoaches: 'Decrease assistant coaches',
+    ariaIncreaseCheerleaders: 'Increase cheerleaders',
+    ariaDecreaseCheerleaders: 'Decrease cheerleaders',
+    ariaIncreaseFans: 'Increase dedicated fans',
+    ariaDecreaseFans: 'Decrease dedicated fans',
+
+    // Other
+    apoBadge: 'Apo',
+    footerAuthor: 'by Hector del Baix',
+    footerRules: 'Blood Bowl Rules',
 
     // Summary
     teamValue: 'Team Value',
@@ -101,11 +167,19 @@ const strings = {
   },
   es: {
     // Header
-    appTitle: 'Blood Bowl Roster',
+    appTitle: 'BB Roster Maker',
     newTeam: 'Nuevo Equipo',
     savedRosters: 'Plantillas Guardadas',
     switchToLight: 'Cambiar a modo claro',
     switchToDark: 'Cambiar a modo oscuro',
+
+    // Navigation
+    navHome: 'Inicio',
+    navSkills: 'Habilidades',
+    navAdmin: 'Admin',
+    navLogin: 'Iniciar sesion',
+    navLogout: (email: string) => `Cerrar sesion (${email})`,
+    navMenu: 'Menu',
 
     // Team selector
     chooseTeam: 'Elige tu Equipo',
@@ -122,6 +196,7 @@ const strings = {
     // Roster builder
     back: 'Volver',
     teamNamePlaceholder: 'Nombre del Equipo',
+    coachNamePlaceholder: 'Nombre del Coach',
     hideAvailable: 'Ocultar Jugadores Disponibles',
     showAvailable: 'Mostrar Jugadores Disponibles',
     roster: 'Plantilla',
@@ -135,6 +210,63 @@ const strings = {
     none: 'Ninguna',
     addPlayer: 'Añadir jugador',
     removePlayer: 'Quitar jugador',
+
+    // Star Players
+    starPlayers: 'Jugadores Estrella',
+    searchStar: 'Buscar estrella...',
+    alreadyHired: 'Ya contratado',
+    hire: 'Contratar',
+    noStarsAvailable: 'No hay estrellas disponibles',
+
+    // Inducements
+    inducements: 'Incentivos',
+
+    // Tabs builder
+    tabRoster: 'Plantilla',
+    tabStarPlayers: 'Estrellas',
+    tabInducements: 'Incentivos',
+    tabStaff: 'Staff y Config',
+
+    // Budget bar
+    budgetLabel: 'Presupuesto',
+    tvBreakdown: 'Desglose TV',
+    tvPlayers: 'Jugadores',
+    tvStars: 'Estrellas',
+    tvInducements: 'Incentivos',
+    tvRerolls: 'Repeticiones',
+    tvStaff: 'Staff',
+
+    // Toast/feedback
+    playerAdded: (pos: string) => `${pos} añadido a la plantilla`,
+    playerRemoved: (pos: string) => `${pos} eliminado`,
+    exportSuccess: 'Exportacion completada',
+    importSuccess: 'Plantilla importada correctamente',
+    undoRemove: 'Deshacer',
+
+    // Confirm modal
+    cancel: 'Cancelar',
+    confirmRemovePlayer: (pos: string) => `¿Eliminar ${pos} de la plantilla?`,
+    remove: 'Eliminar',
+    close: 'Cerrar',
+
+    // Empty states
+    emptyRosterHeading: 'Sin Jugadores',
+    emptyRosterHint: 'Añade jugadores de las posiciones disponibles arriba para construir tu equipo.',
+
+    // Accessibility
+    ariaIncreaseRerolls: 'Aumentar repeticiones',
+    ariaDecreaseRerolls: 'Reducir repeticiones',
+    ariaIncreaseCoaches: 'Aumentar entrenadores asistentes',
+    ariaDecreaseCoaches: 'Reducir entrenadores asistentes',
+    ariaIncreaseCheerleaders: 'Aumentar animadoras',
+    ariaDecreaseCheerleaders: 'Reducir animadoras',
+    ariaIncreaseFans: 'Aumentar hinchas',
+    ariaDecreaseFans: 'Reducir hinchas',
+
+    // Other
+    apoBadge: 'Apo',
+    footerAuthor: 'por Hector del Baix',
+    footerRules: 'Reglas Blood Bowl',
 
     // Summary
     teamValue: 'Valor del Equipo',

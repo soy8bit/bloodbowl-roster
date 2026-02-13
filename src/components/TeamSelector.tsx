@@ -8,10 +8,16 @@ interface Props {
   onSelect: (team: TeamData) => void;
 }
 
-const tierColors: Record<number, string> = {
-  1: '#c9a227',
-  2: '#a0a0a0',
-  3: '#cd7f32',
+const tierClass: Record<number, string> = {
+  1: 'tier-gold',
+  2: 'tier-silver',
+  3: 'tier-bronze',
+};
+
+const teamTierClass: Record<number, string> = {
+  1: 'team-tier-1',
+  2: 'team-tier-2',
+  3: 'team-tier-3',
 };
 
 export default function TeamSelector({ teams, onSelect }: Props) {
@@ -64,7 +70,7 @@ export default function TeamSelector({ teams, onSelect }: Props) {
           {filtered.map((team, i) => (
             <motion.button
               key={team.id}
-              className={`team-card ${team.retired ? 'retired' : ''}`}
+              className={`team-card ${team.retired ? 'retired' : ''} ${teamTierClass[team.tier] || ''}`}
               onClick={() => onSelect(team)}
               layout
               initial={{ opacity: 0, scale: 0.95 }}
@@ -77,10 +83,7 @@ export default function TeamSelector({ teams, onSelect }: Props) {
             >
               <div className="team-card-header">
                 <span className="team-name">{team.name}</span>
-                <span
-                  className="team-tier"
-                  style={{ color: tierColors[team.tier] || '#888' }}
-                >
+                <span className={`team-tier ${tierClass[team.tier] || ''}`}>
                   {tierLabels[team.tier] || `Tier ${team.tier}`}
                 </span>
               </div>
@@ -92,7 +95,7 @@ export default function TeamSelector({ teams, onSelect }: Props) {
               <div className="team-card-meta">
                 <span>{t.rerollCost} {team.reroll.cost}k</span>
                 <span>{team.players.length} {t.positions}</span>
-                {team.allowedApothecary && <span className="apo-badge">Apo</span>}
+                {team.allowedApothecary && <span className="apo-badge">{t.apoBadge}</span>}
               </div>
             </motion.button>
           ))}
