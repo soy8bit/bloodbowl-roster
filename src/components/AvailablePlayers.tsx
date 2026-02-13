@@ -91,6 +91,17 @@ export default function AvailablePlayers({ team, roster, playerMap, skills, onAd
                       +
                     </button>
                   </td>
+                  {/* Mobile-only: stats summary */}
+                  <td className="col-mobile-stats">
+                    <div className="mobile-stats-row">
+                      {statLabels.map((label, i) => (
+                        <span key={label} className="mobile-stat">
+                          <span className="mobile-stat-label">{label}</span>
+                          <span className="mobile-stat-value">{formatStat(pd.playerStats[i], i)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </td>
                 </tr>
               );
             })}

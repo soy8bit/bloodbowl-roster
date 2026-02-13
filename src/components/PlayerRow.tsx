@@ -78,6 +78,20 @@ export default function PlayerRow({ player, index, skills, onRemove, onNameChang
           &times;
         </button>
       </td>
+      {/* Mobile-only: stats + cost summary row */}
+      <td className="col-mobile-stats">
+        <div className="mobile-stats-row">
+          {statLabels.map((label, i) => (
+            <span key={label} className="mobile-stat">
+              <span className="mobile-stat-label">{label}</span>
+              <span className="mobile-stat-value">{formatStat(player.playerStats[i], i)}</span>
+            </span>
+          ))}
+          <span className="mobile-stat mobile-stat-cost">
+            <span className="mobile-stat-value">{player.cost}k</span>
+          </span>
+        </div>
+      </td>
     </motion.tr>
   );
 }
