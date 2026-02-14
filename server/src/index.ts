@@ -4,6 +4,10 @@ import db from './db.js';
 import authRoutes from './routes/auth.js';
 import rosterRoutes from './routes/rosters.js';
 import gameDataRoutes from './routes/gameData.js';
+import matchRoutes from './routes/matches.js';
+import meRoutes from './routes/me.js';
+import competitionRoutes from './routes/competitions.js';
+import notificationRoutes from './routes/notifications.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,6 +19,10 @@ app.use(express.json({ limit: '5mb' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/rosters', rosterRoutes);
 app.use('/api/game-data', gameDataRoutes);
+app.use('/api/matches', matchRoutes);
+app.use('/api/me', meRoutes);
+app.use('/api/competitions', competitionRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // GET /api/shared/:shareId — view shared roster (public, read-only)
 app.get('/api/shared/:shareId', (req, res) => {

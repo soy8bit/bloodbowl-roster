@@ -8,6 +8,7 @@ export const categoryClass: Record<string, string> = {
   M: 'skill-m',
   P: 'skill-p',
   S: 'skill-s',
+  D: 'skill-d',
   T: 'skill-t',
   NA: 'skill-t',
 };

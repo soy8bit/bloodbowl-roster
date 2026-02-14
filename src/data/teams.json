@@ -9,7 +9,7 @@
       { "id": 4, "max": 4 },
       { "id": 5, "max": 1 }
     ],
-    "reroll": { "cost": 70, "max": 8 },
+    "reroll": { "cost": 60, "max": 8 },
     "allowedApothecary": true,
     "tier": 2,
     "specialRules": ["Old World Classic"]
@@ -37,7 +37,7 @@
       { "id": 12, "max": 1 },
       { "id": 13, "max": 1 }
     ],
-    "reroll": { "cost": 60, "max": 8 },
+    "reroll": { "cost": 50, "max": 8 },
     "allowedApothecary": true,
     "tier": 2,
     "specialRules": [],
@@ -49,7 +49,7 @@
     "players": [
       { "id": 14, "max": 12 },
       { "id": 15, "max": 2 },
-      { "id": 16, "max": 4 },
+      { "id": 16, "max": 2 },
       { "id": 17, "max": 2 },
       { "id": 18, "max": 2 }
     ],
@@ -68,7 +68,7 @@
       { "id": 22, "max": 2 },
       { "id": 23, "max": 1 }
     ],
-    "reroll": { "cost": 50, "max": 8 },
+    "reroll": { "cost": 60, "max": 8 },
     "allowedApothecary": true,
     "tier": 1,
     "specialRules": ["Old World Classic", "Worlds Edge Superleague"]
@@ -79,7 +79,7 @@
     "players": [
       { "id": 24, "max": 12 },
       { "id": 25, "max": 2 },
-      { "id": 26, "max": 4 },
+      { "id": 26, "max": 2 },
       { "id": 27, "max": 2 }
     ],
     "reroll": { "cost": 50, "max": 8 },
@@ -127,8 +127,8 @@
     "players": [
       { "id": 39, "max": 16 },
       { "id": 40, "max": 2 },
-      { "id": 41, "max": 4 },
-      { "id": 42, "max": 4 },
+      { "id": 41, "max": 2 },
+      { "id": 42, "max": 2 },
       { "id": 35, "max": 3 },
       { "id": 5, "max": 1 }
     ],
@@ -175,7 +175,7 @@
       { "id": 54, "max": 4 },
       { "id": 55, "max": 1 }
     ],
-    "reroll": { "cost": 70, "max": 8 },
+    "reroll": { "cost": 60, "max": 8 },
     "allowedApothecary": false,
     "tier": 2,
     "specialRules": ["Favoured of Nurgle"]
@@ -201,7 +201,7 @@
       { "id": 116, "max": 1 },
       { "id": 117, "max": 1 },
       { "id": 118, "max": 1 },
-      { "id": 119, "max": 2 },
+      { "id": 119, "max": 3 },
       { "id": 120, "max": 1 },
       { "id": 121, "max": 1 },
       { "id": 122, "max": 1 },
@@ -222,7 +222,7 @@
       { "id": 59, "max": 16 },
       { "id": 60, "max": 2 },
       { "id": 61, "max": 4 },
-      { "id": 62, "max": 4 },
+      { "id": 62, "max": 2 },
       { "id": 63, "max": 4 },
       { "id": 64, "max": 1 }
     ],
@@ -252,7 +252,7 @@
     "players": [
       { "id": 68, "max": 16 },
       { "id": 69, "max": 2 },
-      { "id": 70, "max": 4 },
+      { "id": 70, "max": 2 },
       { "id": 71, "max": 2 },
       { "id": 72, "max": 1 }
     ],
@@ -272,7 +272,7 @@
       { "id": 77, "max": 2 },
       { "id": 8, "max": 2 }
     ],
-    "reroll": { "cost": 60, "max": 8 },
+    "reroll": { "cost": 70, "max": 8 },
     "allowedApothecary": true,
     "tier": 3,
     "specialRules": ["Bribery and Corruption", "Low Cost Linemen", "Underworld Challenge"],
@@ -403,7 +403,7 @@
       { "id": 111, "max": 2 },
       { "id": 112, "max": 4 }
     ],
-    "reroll": { "cost": 70, "max": 8 },
+    "reroll": { "cost": 60, "max": 8 },
     "allowedApothecary": false,
     "tier": 2,
     "specialRules": ["Sylvanian Spotlight"]

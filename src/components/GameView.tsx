@@ -217,7 +217,7 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
           <InfoButton text={t.helpGameModeDesc} />
         </div>
         <div className="game-scoreboard-main">
-          <div className="game-score-side">
+          <div className="game-score-side game-score-home">
             <span className="game-score-team-label">{t.home}</span>
             <div className="game-score-counter">
               <button className="game-score-btn" onClick={() => setGameState(s => ({ ...s, scoreHome: Math.max(0, s.scoreHome - 1) }))}>-</button>
@@ -242,7 +242,7 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
               <button className="game-turn-btn" onClick={() => setGameState(s => ({ ...s, turn: Math.min(8, s.turn + 1) }))}>+</button>
             </div>
           </div>
-          <div className="game-score-side">
+          <div className="game-score-side game-score-away">
             <span className="game-score-team-label">{t.away}</span>
             <div className="game-score-counter">
               <button className="game-score-btn" onClick={() => setGameState(s => ({ ...s, scoreAway: Math.max(0, s.scoreAway - 1) }))}>-</button>
@@ -253,20 +253,47 @@ export default function GameView({ roster, team, skills, onSkillClick }: Props) 
         </div>
       </div>
 
-      {/* Resources bar — compact single strip */}
+      {/* Resources bar */}
       <div className="game-resources">
-        <button
-          className={`game-resource-pill game-resource-reroll ${usedRerolls >= roster.rerolls ? 'game-resource-used' : ''}`}
-          onClick={() => setGameState(s => ({ ...s, usedRerolls: s.usedRerolls < roster.rerolls ? s.usedRerolls + 1 : 0 }))}
-        >
-          RR: {roster.rerolls - usedRerolls}/{roster.rerolls}
-        </button>
-        {roster.apothecary && (
-          <span className="game-resource-pill game-resource-apo">Apo</span>
-        )}
-        <span className="game-resource-pill">AC: {roster.assistantCoaches}</span>
-        <span className="game-resource-pill">CL: {roster.cheerleaders}</span>
-        <span className="game-resource-pill">FF: {roster.dedicatedFans}</span>
+        <div className="game-resources-row">
+          <span className={`game-resource-pill game-resource-reroll ${usedRerolls >= roster.rerolls ? 'game-resource-used' : ''}`}>
+            <span className="game-resource-icon">🔄</span>
+            <span className="game-resource-label">{t.rerolls}</span>
+            <button
+              className="game-resource-arrow"
+              onClick={() => setGameState(s => ({ ...s, usedRerolls: Math.min(s.usedRerolls + 1, roster.rerolls) }))}
+              disabled={usedRerolls >= roster.rerolls}
+            >−</button>
+            <span className="game-resource-count">{roster.rerolls - usedRerolls}/{roster.rerolls}</span>
+            <button
+              className="game-resource-arrow"
+              onClick={() => setGameState(s => ({ ...s, usedRerolls: Math.max(0, s.usedRerolls - 1) }))}
+              disabled={usedRerolls <= 0}
+            >+</button>
+          </span>
+          {roster.apothecary && (
+            <span className="game-resource-pill game-resource-apo" title={t.apothecary}>
+              <span className="game-resource-icon">💉</span>
+              <span className="game-resource-label">{t.apothecary}</span>
+            </span>
+          )}
+          <span className="game-resource-pill" title={t.assistantCoaches}>
+            <span className="game-resource-icon">📋</span>
+            <span className="game-resource-label">{t.assistantCoaches}</span>
+            <span className="game-resource-count">{roster.assistantCoaches}</span>
+          </span>
+          <span className="game-resource-pill" title={t.cheerleaders}>
+            <span className="game-resource-icon">📣</span>
+            <span className="game-resource-label">{t.cheerleaders}</span>
+            <span className="game-resource-count">{roster.cheerleaders}</span>
+          </span>
+          <span className="game-resource-pill" title={t.dedicatedFans}>
+            <span className="game-resource-icon">🏟️</span>
+            <span className="game-resource-label">{t.dedicatedFans}</span>
+            <span className="game-resource-count">{roster.dedicatedFans}</span>
+          </span>
+          <InfoButton text={t.helpGameResourcesDesc} />
+        </div>
         <span className="game-resource-pill game-resource-summary">
           {statusCounts.ok} OK
           {statusCounts.ko > 0 && <> / {statusCounts.ko} KO</>}

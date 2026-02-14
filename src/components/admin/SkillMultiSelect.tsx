@@ -16,11 +16,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   M: 'Mutation',
   P: 'Passing',
   S: 'Strength',
+  D: 'Devious',
   T: 'Trait',
   NA: 'Other',
 };
 
-const CATEGORY_ORDER = ['G', 'A', 'S', 'M', 'P', 'T', 'NA'];
+const CATEGORY_ORDER = ['G', 'A', 'S', 'M', 'P', 'D', 'T', 'NA'];
 
 interface Props {
   selected: number[];

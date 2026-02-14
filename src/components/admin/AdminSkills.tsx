@@ -147,6 +147,7 @@ export default function AdminSkills() {
                     <option value="G">G</option>
                     <option value="M">M</option>
                     <option value="P">P</option>
+                    <option value="D">D</option>
                     <option value="S">S</option>
                     <option value="T">T</option>
                   </select>

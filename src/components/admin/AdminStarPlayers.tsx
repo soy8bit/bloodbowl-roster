@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import type { StarPlayerData } from '../../types';
+import SkillNameMultiSelect from './SkillNameMultiSelect';
 
 const TOKEN_KEY = 'bb_token';
 
 function emptyStar(): StarPlayerData {
-  return { name: '', cost: 0, MA: 6, ST: 3, AG: 3, PA: 4, AV: 8, skills: [], teams: [] };
+  return { name: '', cost: 0, MA: 6, ST: 3, AG: 3, PA: 4, AV: 8, skills: [], teams: [], specialRule: '', specialRuleDescription: '', specialRuleEs: '', specialRuleDescriptionEs: '' };
 }
 
 export default function AdminStarPlayers() {
@@ -36,10 +37,6 @@ export default function AdminStarPlayers() {
       next[index] = { ...next[index], [field]: value };
       return next;
     });
-  };
-
-  const updateSkills = (index: number, value: string) => {
-    updateStar(index, 'skills', value.split(',').map((s) => s.trim()).filter(Boolean));
   };
 
   const updateTeams = (index: number, value: string) => {
@@ -118,6 +115,7 @@ export default function AdminStarPlayers() {
               >
                 <span className="admin-star-name">{star.name || '(unnamed)'}</span>
                 <span className="admin-star-cost">{star.cost}k</span>
+                {star.specialRule && <span className="admin-star-rule">{star.specialRule}</span>}
                 <span className="admin-star-stats">
                   {statLabels.map((label, i) => (
                     <span key={label} className="admin-star-stat">
@@ -161,12 +159,10 @@ export default function AdminStarPlayers() {
                     ))}
                   </div>
                   <div className="admin-star-row">
-                    <label>Skills (comma separated)</label>
-                    <input
-                      type="text"
-                      className="admin-input admin-input-wide"
-                      value={star.skills.join(', ')}
-                      onChange={(e) => updateSkills(originalIndex, e.target.value)}
+                    <label>Skills</label>
+                    <SkillNameMultiSelect
+                      selected={star.skills}
+                      onChange={(skills) => updateStar(originalIndex, 'skills', skills)}
                     />
                   </div>
                   <div className="admin-star-row">
@@ -176,6 +172,42 @@ export default function AdminStarPlayers() {
                       className="admin-input admin-input-wide"
                       value={star.teams.join(', ')}
                       onChange={(e) => updateTeams(originalIndex, e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Special Rule (EN)</label>
+                    <input
+                      type="text"
+                      className="admin-input admin-input-wide"
+                      value={star.specialRule || ''}
+                      onChange={(e) => updateStar(originalIndex, 'specialRule', e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Special Rule Description (EN)</label>
+                    <textarea
+                      className="admin-input admin-input-wide admin-textarea"
+                      rows={3}
+                      value={star.specialRuleDescription || ''}
+                      onChange={(e) => updateStar(originalIndex, 'specialRuleDescription', e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Special Rule (ES)</label>
+                    <input
+                      type="text"
+                      className="admin-input admin-input-wide"
+                      value={star.specialRuleEs || ''}
+                      onChange={(e) => updateStar(originalIndex, 'specialRuleEs', e.target.value)}
+                    />
+                  </div>
+                  <div className="admin-star-row">
+                    <label>Special Rule Description (ES)</label>
+                    <textarea
+                      className="admin-input admin-input-wide admin-textarea"
+                      rows={3}
+                      value={star.specialRuleDescriptionEs || ''}
+                      onChange={(e) => updateStar(originalIndex, 'specialRuleDescriptionEs', e.target.value)}
                     />
                   </div>
                   <div className="admin-star-row admin-star-actions">

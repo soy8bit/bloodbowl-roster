@@ -65,6 +65,21 @@ export default function HelpPage() {
       content: t.helpSavedContent,
     },
     {
+      id: 'matches',
+      title: t.helpMatchesTitle,
+      content: t.helpMatchesContent,
+    },
+    {
+      id: 'stats',
+      title: t.helpStatsTitle,
+      content: t.helpStatsContent,
+    },
+    {
+      id: 'account',
+      title: t.helpAccountTitle,
+      content: t.helpAccountContent,
+    },
+    {
       id: 'shortcuts',
       title: t.helpShortcutsTitle,
       content: t.helpShortcutsContent,

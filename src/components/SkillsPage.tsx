@@ -10,6 +10,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   M: 'Mutation',
   P: 'Passing',
   S: 'Strength',
+  D: 'Devious',
   T: 'Trait',
 };
 
@@ -38,7 +39,7 @@ export default function SkillsPage() {
     });
   }, [skillList, search, filterCat]);
 
-  const categories = ['all', 'A', 'G', 'M', 'P', 'S', 'T'];
+  const categories = ['all', 'A', 'G', 'M', 'P', 'S', 'D', 'T'];
 
   return (
     <div className="skills-page">

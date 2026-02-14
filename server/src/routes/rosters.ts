@@ -116,4 +116,13 @@ router.post('/:id/share', requireAuth, (req, res) => {
   res.json({ shareId });
 });
 
+// DELETE /api/rosters/:id/share — remove share link
+router.delete('/:id/share', requireAuth, (req, res) => {
+  const result = db.prepare(
+    'UPDATE rosters SET share_id = NULL WHERE id = ? AND user_id = ?'
+  ).run(req.params.id, req.user!.userId);
+  if (result.changes === 0) { res.status(404).json({ error: 'Roster not found' }); return; }
+  res.json({ unshared: true });
+});
+
 export default router;

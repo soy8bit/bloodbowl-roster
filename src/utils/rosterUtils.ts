@@ -21,7 +21,10 @@ export interface TVBreakdown {
 }
 
 export function calculateTVBreakdown(roster: Roster, team: TeamData): TVBreakdown {
-  const players = roster.players.reduce((sum, p) => sum + p.cost, 0);
+  const players = roster.players.reduce((sum, p) => {
+    const upgradeTV = (p.upgrades || []).reduce((s, u) => s + u.tvIncrease, 0);
+    return sum + p.cost + upgradeTV;
+  }, 0);
   const stars = (roster.starPlayers || []).reduce((sum, sp) => sum + sp.cost, 0);
   const inducements = (roster.inducements || []).reduce((sum, ind) => {
     const data = inducementMap.get(ind.id);

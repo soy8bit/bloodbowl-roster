@@ -1,5 +1,6 @@
 import type { Roster, TeamData } from '../types';
 import { calculateTeamValue, formatStat, formatGold } from './rosterUtils';
+import { calculateTotalSPP, calculatePlayerValue } from './progressionUtils';
 import { getStrings, type Lang } from '../i18n';
 import starPlayersRaw from '../data/starPlayers.json';
 import type { StarPlayerData } from '../types';
@@ -18,32 +19,48 @@ export function exportRosterPdf(
 
   const playerRows = roster.players
     .map((p, i) => {
-      const skillNames = p.skills
+      const baseSkillNames = p.skills
         .map((id) => {
           const s = skills[String(id)];
           if (!s) return '';
           return lang === 'es' ? s.nameEs : s.name;
         })
-        .filter(Boolean)
-        .join(', ');
+        .filter(Boolean);
+      const upgradeSkillNames = (p.upgrades || [])
+        .filter(u => u.skillId != null)
+        .map(u => {
+          const s = skills[String(u.skillId)];
+          if (!s) return '';
+          return `<u>${lang === 'es' ? s.nameEs : s.name}</u>`;
+        })
+        .filter(Boolean);
+      const statUpgrades = (p.upgrades || [])
+        .filter(u => u.type === 'stat')
+        .map(u => `<u>+1 ${u.stat}</u>`);
+      const allSkills = [...baseSkillNames, ...upgradeSkillNames, ...statUpgrades].join(', ');
       const stats = p.playerStats
         .map((s, si) => `<td class="stat">${formatStat(s, si)}</td>`)
         .join('');
+      const spp = calculateTotalSPP(p.spp);
+      const playerVal = calculatePlayerValue(p);
+      const sppBadge = spp > 0 ? ` <span class="pdf-spp">${spp} SPP</span>` : '';
+      const mngBadge = p.missNextGame ? ' <span class="pdf-mng">MNG</span>' : '';
       return `<tr>
         <td class="num">${i + 1}</td>
-        <td class="name">${p.name || p.position}</td>
+        <td class="name">${p.name || p.position}${sppBadge}${mngBadge}</td>
         <td class="pos">${p.position}</td>
         ${stats}
-        <td class="skills">${skillNames}</td>
-        <td class="cost">${p.cost}k</td>
+        <td class="skills">${allSkills}</td>
+        <td class="cost">${playerVal}k</td>
       </tr>`;
     })
     .join('\n');
 
-  // Collect all unique skill IDs from roster players
+  // Collect all unique skill IDs from roster players (base + upgrades)
   const skillIdSet = new Set<string>();
   roster.players.forEach((p) => {
     p.skills.forEach((id) => skillIdSet.add(String(id)));
+    (p.upgrades || []).forEach((u) => { if (u.skillId != null) skillIdSet.add(String(u.skillId)); });
   });
 
   // Collect skill names from star players (they use string names, not IDs)
@@ -157,6 +174,8 @@ export function exportRosterPdf(
   .ref-skill { margin-bottom: 8px; line-height: 1.35; }
   .ref-skill-name { font-weight: 700; font-size: 12px; color: #2a2a2a; display: block; }
   .ref-skill-desc { font-size: 11px; color: #444; display: block; }
+  .pdf-spp { background: #c9a227; color: #1a1a1a; padding: 1px 5px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 4px; }
+  .pdf-mng { background: #c62828; color: white; padding: 1px 5px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-left: 4px; }
   @media print {
     body { padding: 12px; }
     @page { margin: 14mm; }

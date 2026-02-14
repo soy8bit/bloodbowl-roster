@@ -1,11 +1,12 @@
-import { useState, useCallback, useRef, type ChangeEvent } from 'react';
-import type { Roster, TeamData, PlayerData } from '../types';
+import { useState, useCallback, useRef, useEffect, type ChangeEvent } from 'react';
+import type { Roster, TeamData, PlayerData, PlayerUpgrade, PlayerInjury, SPPRecord, GameRecord } from '../types';
 import { useToast } from '../hooks/useToast';
 import { useLang } from '../i18n';
 import BudgetBar from './BudgetBar';
 import BuilderTabs from './BuilderTabs';
 import GameView from './GameView';
 import SkillModal from './SkillModal';
+import ConfirmModal from './ConfirmModal';
 
 interface RosterActions {
   setName: (name: string) => void;
@@ -24,6 +25,15 @@ interface RosterActions {
   addStarPlayer: (name: string, cost: number) => void;
   removeStarPlayer: (uid: string) => void;
   setInducement: (id: string, quantity: number) => void;
+  addPlayerUpgrade: (uid: string, upgrade: PlayerUpgrade) => void;
+  removePlayerUpgrade: (uid: string, upgradeId: string) => void;
+  addPlayerInjury: (uid: string, injury: PlayerInjury) => void;
+  removePlayerInjury: (uid: string, injuryId: string) => void;
+  setPlayerMNG: (uid: string, mng: boolean) => void;
+  addPlayerSPP: (uid: string, sppDelta: Partial<SPPRecord>) => void;
+  addGame: (game: GameRecord) => void;
+  updateGame: (gameId: string, game: GameRecord) => void;
+  deleteGame: (gameId: string) => void;
 }
 
 interface Props {
@@ -33,6 +43,9 @@ interface Props {
   skills: Record<string, { name: string; nameEs: string; category: string; description: string; descriptionEs: string }>;
   rosterActions: RosterActions;
   onBack: () => void;
+  hasUnsavedChanges: boolean;
+  onSave: () => { success: boolean; error?: string };
+  onDiscard: () => void;
 }
 
 export default function RosterBuilder({
@@ -42,14 +55,30 @@ export default function RosterBuilder({
   skills,
   rosterActions,
   onBack,
+  hasUnsavedChanges,
+  onSave,
+  onDiscard,
 }: Props) {
   const [gameMode, setGameMode] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState<{ name: string; nameEs: string; category: string; description: string; descriptionEs: string } | null>(null);
   const [pendingRemoval, setPendingRemoval] = useState<{ uid: string; position: string } | null>(null);
+  const [nameError, setNameError] = useState(false);
+  const [showBackConfirm, setShowBackConfirm] = useState(false);
   const pendingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const { t } = useLang();
   const { showToast } = useToast();
+
+  // Warn on browser tab close / refresh if unsaved changes
+  useEffect(() => {
+    if (!hasUnsavedChanges) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [hasUnsavedChanges]);
+
+  // Note: useBlocker requires data router (createBrowserRouter).
+  // We use BrowserRouter (legacy), so we rely on beforeunload + onBack confirm only.
 
   const MAX_LOGO_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -113,6 +142,32 @@ export default function RosterBuilder({
     });
   }, [roster.players, rosterActions, showToast, t, pendingRemoval]);
 
+  const handleSave = useCallback(() => {
+    const result = onSave();
+    if (result.success) {
+      showToast(t.rosterSaved, 'success');
+      setNameError(false);
+    } else if (result.error === 'rosterNameRequired') {
+      setNameError(true);
+      showToast(t.rosterNameRequired, 'error');
+    }
+  }, [onSave, showToast, t]);
+
+  const handleBackClick = useCallback(() => {
+    if (hasUnsavedChanges) {
+      setShowBackConfirm(true);
+    } else {
+      onBack();
+    }
+  }, [hasUnsavedChanges, onBack]);
+
+  const handleNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    rosterActions.setName(e.target.value);
+    if (nameError && e.target.value.trim()) {
+      setNameError(false);
+    }
+  }, [rosterActions, nameError]);
+
   const displayedPlayers = pendingRemoval
     ? roster.players.filter((p) => p.uid !== pendingRemoval.uid)
     : roster.players;
@@ -120,7 +175,7 @@ export default function RosterBuilder({
   return (
     <div className="roster-builder">
       <div className="builder-header">
-        <button className="btn-back" onClick={onBack}>&larr; {t.back}</button>
+        <button className="btn-back" onClick={handleBackClick}>&larr; {t.back}</button>
         {!gameMode && (
           <div
             className={`logo-upload-area ${roster.logo ? 'has-logo' : ''}`}
@@ -148,7 +203,7 @@ export default function RosterBuilder({
           </div>
         )}
         {gameMode && roster.logo && (
-          <img src={roster.logo} alt="Logo" className="logo-upload-img" style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+          <img src={roster.logo} alt="Logo" className="logo-upload-img" style={{ width: 64, height: 64, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />
         )}
         <div className="team-info">
           {gameMode ? (
@@ -160,24 +215,31 @@ export default function RosterBuilder({
             </>
           ) : (
             <>
-              <input
-                type="text"
-                className="team-name-input"
-                placeholder={t.teamNamePlaceholder}
-                value={roster.name}
-                onChange={(e) => rosterActions.setName(e.target.value)}
-              />
-              <input
-                type="text"
-                className="coach-name-input"
-                placeholder={t.coachNamePlaceholder}
-                value={roster.coachName || ''}
-                onChange={(e) => rosterActions.setCoachName(e.target.value)}
-              />
+              <div className="input-with-label">
+                <label className="input-label">{t.teamNamePlaceholder}</label>
+                <input
+                  type="text"
+                  className={`team-name-input ${nameError ? 'team-name-input--error' : ''}`}
+                  placeholder={t.teamNamePlaceholder}
+                  value={roster.name}
+                  onChange={handleNameChange}
+                />
+              </div>
+              <div className="input-with-label">
+                <label className="input-label">{t.coachNamePlaceholder}</label>
+                <input
+                  type="text"
+                  className="coach-name-input"
+                  placeholder={t.coachNamePlaceholder}
+                  value={roster.coachName || ''}
+                  onChange={(e) => rosterActions.setCoachName(e.target.value)}
+                />
+              </div>
             </>
           )}
           <div className="team-meta">
             <span className="team-type">{team.name}</span>
+            <span className="season-badge-sm">S3</span>
             {team.specialRules.length > 0 && (
               <span className="team-rules">{team.specialRules.join(' | ')}</span>
             )}
@@ -189,6 +251,12 @@ export default function RosterBuilder({
         >
           {gameMode ? t.exitGameMode : t.gameMode}
         </button>
+        {!gameMode && hasUnsavedChanges && (
+          <div className="save-actions">
+            <button className="btn-save" onClick={handleSave}>{t.save}</button>
+            <button className="btn-discard" onClick={onDiscard}>{t.discard}</button>
+          </div>
+        )}
       </div>
 
       {gameMode ? (
@@ -199,6 +267,7 @@ export default function RosterBuilder({
 
           <BuilderTabs
             roster={roster}
+            rosterId={roster.id}
             team={team}
             playerMap={playerMap}
             skills={skills}
@@ -212,6 +281,22 @@ export default function RosterBuilder({
       )}
 
       <SkillModal skill={selectedSkill} onClose={() => setSelectedSkill(null)} />
+
+      <ConfirmModal
+        open={showBackConfirm}
+        title={t.unsavedChangesTitle}
+        message={t.unsavedChangesMsg}
+        confirmText={t.discardAndLeave}
+        cancelText={t.cancel}
+        onConfirm={() => {
+          setShowBackConfirm(false);
+          onDiscard();
+          onBack();
+        }}
+        onCancel={() => setShowBackConfirm(false)}
+        variant="warning"
+      />
+
     </div>
   );
 }

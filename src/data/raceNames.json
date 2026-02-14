@@ -1,0 +1,90 @@
+{
+  "human": {
+    "first": ["Wilhelm", "Karl", "Franz", "Otto", "Heinrich", "Ludwig", "Aldric", "Berthold", "Conrad", "Dieter", "Ernst", "Friedrich", "Gerhard", "Helmut", "Jurgen", "Klaus", "Manfred", "Rolf", "Siegmund", "Tobias", "Ulrich", "Volker", "Werner", "Albrecht", "Bruno", "Gunther", "Magnus", "Stefan", "Wolfgang", "Hartmut", "Lothar", "Reinhard"],
+    "last": ["Gruber", "Steinberg", "Holtz", "Brauer", "Ackermann", "Metzger", "Richter", "Krieger", "Altdorf", "Blackwater", "Heidmann", "Kesselring", "Wolfram", "Stahlberg", "Eisenhart", "Grimmwald", "Brenner", "Falkenberg", "Hammerschlag", "Drachenfels", "Bergmann", "Kaufmann", "Schreiber", "Vogt", "Ziegler", "Rotfaust", "Weissmann", "Kaltenstein", "Dornheim", "Lindauer", "Sturmgart", "Reikwald"]
+  },
+  "orc": {
+    "first": ["Grok", "Varag", "Uzgob", "Drakka", "Grishnak", "Bolg", "Morgash", "Skullcrak", "Thumpa", "Narzug", "Ugrak", "Grukk", "Badzag", "Gorfang", "Skargor", "Mugdug", "Azgul", "Warboss", "Gutrippa", "Rokkit", "Snagga", "Dakka", "Zogga", "Grimjaw", "Skargit", "Nazgob", "Gorblud", "Thuggrim", "Kraggash", "Muzgash", "Gulgut", "Brakka"],
+    "last": ["Facestompa", "Bonecruncha", "Ironjaw", "Skullsplitter", "Guttrippa", "Armbreaka", "Tuskbasher", "Nosebiter", "Headkicker", "Ribcracker", "Jawsmasha", "Teefyanker", "Shinbusta", "Goreklaw", "Doomhamma", "Backbreaka", "Legsnappar", "Kneecappa", "Throatchompa", "Earrippa", "Bonebreaka", "Spinecrush", "Eyegouger", "Toecruncha", "Fingasnappa", "Gutpuncha", "Elbowdrop", "Facegrinda", "Skulltaker", "Bootboy", "Meatlobba", "Bonesnappa"]
+  },
+  "chaos": {
+    "first": ["Azaroth", "Vulgrim", "Malekhar", "Xarthros", "Bel'akor", "Netharon", "Gorethax", "Kraveth", "Slaathus", "Vorthek", "Drazhogg", "Kharaxes", "Mordrek", "Vyroth", "Zyrkaan", "Nul'thek", "Razheem", "Abraxus", "Daemorr", "Kael'thos", "Torgrath", "Grimvex", "Sekthar", "Malachar", "Urgash", "Daemoth", "Xyrath", "Bhaalkus", "Morvath", "Ashgarr", "Thul'vor", "Nex'rath"],
+    "last": ["Bloodsworn", "Darkclaw", "Ruinbringer", "Voidtouched", "Flameborn", "Doomhowl", "Soulflayer", "Nightbane", "Hellforged", "Chaosmarked", "Gorespawn", "Blightsoul", "Dreadmaw", "Skullreaper", "Fiendclaw", "Warpborn", "Shadowcursed", "Grimsoul", "Bonegnasher", "Darkfire", "Banebreath", "Plagueclaw", "Deathrattle", "Ironhide", "Doomscream", "Blighthorn", "Rotfang", "Wrathborn", "Hellshriek", "Skarscale", "Brimstone", "Dreadforge"]
+  },
+  "dark_elf": {
+    "first": ["Lokhir", "Rakarth", "Malekith", "Shadowblade", "Kouran", "Tullaris", "Mengil", "Anethra", "Morathi", "Hellebron", "Khainite", "Druchii", "Velador", "Nagarond", "Darkblade", "Malus", "Khalek", "Sorath", "Urian", "Vindros", "Thyriol", "Laithikir", "Kaelith", "Vassago", "Raven", "Caledor", "Nageira", "Sulekh", "Drannach", "Alandrian", "Vraneth", "Kheranion"],
+    "last": ["Voidheart", "Nightshade", "Darkvenom", "Shadowmere", "Blackspire", "Coldgaze", "Silentblade", "Duskweaver", "Soulpiercer", "Bloodthorn", "Nightwhisper", "Gloomstrike", "Dreadshade", "Shadowveil", "Darkhollow", "Venomfang", "Deathmark", "Bleakstorm", "Ashenmist", "Ravendusk", "Blackrose", "Silverscar", "Grimhollow", "Twilightbane", "Ironshadow", "Dreadfrost", "Nightfury", "Voidwalker", "Deathbloom", "Starless", "Thornweald", "Ebonheart"]
+  },
+  "dwarf": {
+    "first": ["Thorgrim", "Gotrek", "Ungrim", "Kazak", "Bardin", "Snorri", "Grimnir", "Kragg", "Bugman", "Grombrindal", "Thane", "Grundi", "Kadrin", "Brokkir", "Dimzad", "Alrik", "Morgrim", "Thorek", "Okri", "Ragnar", "Kurgan", "Sturnin", "Grimbold", "Drugin", "Borgin", "Norgrim", "Hammerson", "Kazador", "Duregar", "Balkrin", "Skorri", "Torgan"],
+    "last": ["Ironforge", "Stonehelm", "Goldbeard", "Thunderhammer", "Anvilstrike", "Stonebreaker", "Oathkeeper", "Ironbrow", "Deepdelver", "Grudgebearer", "Copperkettle", "Steelpick", "Flinthand", "Strongarm", "Rockcrusher", "Shieldwall", "Hammerfall", "Oakenshield", "Gemcutter", "Bronzefist", "Tunnelguard", "Coalbeard", "Greystone", "Kegmaster", "Mithrilhelm", "Brighthammer", "Doomshield", "Steelbraids", "Forgefire", "Ironpeak", "Stonebrow", "Granitjaw"]
+  },
+  "chaos_dwarf": {
+    "first": ["Zhatan", "Ghorth", "Astragoth", "Drazhoath", "Bazherak", "Mordrek", "Gzharakk", "Shar'tor", "Zharkov", "Hashut", "Drazhuk", "Razzak", "Ulzhak", "Borgash", "Thagorr", "Kharazk", "Vorthak", "Nul'kazz", "Szargul", "Krazhaan", "Ashgor", "Bul'tar", "Drazzik", "Gorduz", "Hothgar", "Kazzak", "Morghaz", "Rykarth", "Zhargon", "Azgorh", "Draz'kul", "Gharkhon"],
+    "last": ["Darkgrinder", "Ashbeard", "Ironsworn", "Doomforger", "Firebrand", "Slavelord", "Blacktongue", "Hellsmith", "Moltenhand", "Greyash", "Burnfist", "Cinderjaw", "Darkfire", "Ashensteel", "Grimforge", "Lavaheart", "Fireborn", "Obsidianfist", "Skulltaker", "Ironbull", "Deathsmith", "Sootbeard", "Emberclaw", "Infernalhorn", "Magmavein", "Blacksmith", "Chaincaster", "Smeltblood", "Scorchbeard", "Brasshand", "Warforger", "Coalfist"]
+  },
+  "elf": {
+    "first": ["Aethis", "Caladris", "Finubar", "Tyrion", "Teclis", "Alarielle", "Eltharion", "Imrik", "Korhil", "Aliathra", "Eldyra", "Belannaer", "Yrtle", "Liandra", "Carathril", "Aislinn", "Eldain", "Stormwing", "Ilmarin", "Gilead", "Tethlis", "Anarion", "Caledor", "Eltharin", "Finreir", "Galadhor", "Ithilmar", "Lindara", "Maedrethnir", "Naieth", "Sariel", "Valandor"],
+    "last": ["Starweaver", "Moonblade", "Sunfire", "Windrunner", "Silverbough", "Brightsong", "Dawnlight", "Crystalshield", "Starfall", "Skydancer", "Emberheart", "Goldenbow", "Lightbringer", "Skyweaver", "Flamespire", "Dreamwalker", "Stormborn", "Swiftwing", "Shimmerleaf", "Silvermist", "Morningstar", "Galewhisper", "Radiantshield", "Clouddancer", "Sunshard", "Starholm", "Lunarwind", "Gracebow", "Dawnstrike", "Auriel", "Sapphiregaze", "Evenstar"]
+  },
+  "goblin": {
+    "first": ["Snikkit", "Nobbla", "Ripper", "Scrappa", "Zit", "Grotbag", "Snotgob", "Gribble", "Nuffink", "Stikkit", "Bogrot", "Gitface", "Spleenk", "Fizzgig", "Skrag", "Gobbla", "Murkit", "Slimey", "Duffskul", "Grubnik", "Bugbitz", "Gnasher", "Sneekz", "Wriggle", "Twitchit", "Kreepz", "Niblit", "Blitza", "Zigzag", "Rottooth", "Skabbs", "Fungoid"],
+    "last": ["Backstabba", "Gitfinga", "Earbitta", "Sneakstab", "Fingerpicka", "Anklebita", "Noserunna", "Legtrippa", "Shinpoka", "Bottlechucka", "Pocketpicka", "Headbutta", "Toepincca", "Kneecappa", "Arsekicka", "Dirtchucka", "Ratsniffa", "Bogbreath", "Fungustongue", "Eyegouger", "Nosepicka", "Bootkicka", "Mushroombrain", "Snotflinga", "Spiderfeed", "Chainyanker", "Trapspringa", "Boneknaw", "Skunkmuncha", "Grottrot", "Wormgulper", "Mudchompa"]
+  },
+  "snotling": {
+    "first": ["Blip", "Snot", "Pip", "Gloop", "Drib", "Plop", "Squig", "Nib", "Blib", "Grib", "Splat", "Drip", "Flib", "Grit", "Mip", "Nub", "Plib", "Skid", "Trib", "Zit", "Blob", "Dud", "Fiz", "Glob", "Muck", "Ooze", "Runt", "Slop", "Twig", "Wort", "Yip", "Zog"],
+    "last": ["Toebitta", "Mudface", "Snotdrip", "Wormchew", "Bogsniff", "Mushroomhat", "Puddlejump", "Dirtmunch", "Fleabag", "Stumptoe", "Splatface", "Gooball", "Bugmunch", "Mossnose", "Toadlick", "Muddybutt", "Fungusfoot", "Slimecheek", "Wetnose", "Dustmite", "Grubfinger", "Moldtooth", "Swamptoe", "Leafmunch", "Pebblehead", "Rustfoot", "Stickyhand", "Dirtclod", "Bogwander", "Sproutears", "Dewdrop", "Littlegrub"]
+  },
+  "halfling": {
+    "first": ["Tobold", "Rollo", "Hamfast", "Bilbur", "Drogo", "Mungo", "Largo", "Folco", "Bingo", "Lotho", "Odo", "Paladin", "Saradoc", "Fredegar", "Holman", "Adelard", "Griffo", "Milo", "Ponto", "Rufus", "Dodinas", "Everard", "Gerontius", "Hildigrim", "Isengar", "Jolly", "Marcho", "Otho", "Pansy", "Primula", "Sigismond", "Togo"],
+    "last": ["Greenhill", "Puddlefoot", "Butterworth", "Applebottom", "Hayward", "Smallburrow", "Tunnelly", "Bracegirdle", "Goodbody", "Longbottom", "Underhill", "Hornblower", "Sackville", "Bolger", "Proudfoot", "Rumble", "Burrows", "Chubb", "Gamgee", "Grubb", "Maggot", "Noakes", "Twofoot", "Whitfoot", "Brownlock", "Fairbairn", "Headstrong", "Mugwort", "Sandybanks", "Brockhouse", "Puddifoot", "Greenhand"]
+  },
+  "lizardmen": {
+    "first": ["Xho'ka", "Tlaqua", "Itza", "Tetto", "Kroq", "Tiktaq", "Nakai", "Oxyotl", "Tehenhauin", "Chakax", "Gor'Rok", "Huinitenoch", "Mazdamundi", "Tlanxla", "Quatl", "Xlanax", "Tenoch", "Zlatlan", "Pahaux", "Oxayotl", "Quetzl", "Sotek", "Tzunki", "Xapati", "Yuxa", "Chotec", "Huanchi", "Itzamna", "Tepok", "Tzatli", "Axlotl", "Kul'qa"],
+    "last": ["Gar-nak", "Qua-chi", "Xol-Itzl", "Tok-sun", "Rah-Itza", "Mak-tlan", "Zol-Tepec", "Shi-Quatl", "Tza-Gor", "Xho-Lotl", "Paq-tal", "Kro-Xan", "Yal-Sotek", "Tzik-Nakai", "Ox-Mundi", "Rah-Huanchi", "Zat-Chotec", "Miq-Tepok", "Gor-Quetzl", "Axl-Tlanxla", "Zul-Itza", "Tok-Pahaux", "Rah-Tenoch", "Xho-Zlatlan", "Shi-Quatl", "Mak-Yuxa", "Itzl-Sotek", "Gor-Tepok", "Tza-Axlotl", "Qua-Tzunki", "Xol-Pahaux", "Tok-Huanchi"]
+  },
+  "undead": {
+    "first": ["Mortis", "Krell", "Arkhan", "Nagash", "Konrad", "Luthor", "Gashnag", "Vlad", "Mannfred", "Heinrich", "Dieter", "Zacharias", "Walach", "Abhorash", "Neferata", "Ushoran", "Wsoran", "Vorag", "Khemri", "Necrarch", "Ghorst", "Gorgivich", "Mundvard", "Rametep", "Sehenesmet", "Thutep", "Vardek", "Harkon", "Melkhior", "Nourgul", "Renar", "Valabar"],
+    "last": ["Bonegnaw", "Gravechill", "Deathwhisper", "Tombcrawler", "Soulless", "Nightwalker", "Cryptborn", "Gravebound", "Deathrattle", "Darkhollow", "Dustfang", "Rotwhisper", "Ghoulkin", "Wormwood", "Doomgrip", "Coldhand", "Tombstone", "Fleshless", "Grimrot", "Shadowbone", "Deadgrasp", "Bleakmaw", "Corpselight", "Hollowbone", "Mournclaw", "Restless", "Soulchain", "Tombwight", "Undying", "Voidfang", "Wraithtomb", "Deathgrip"]
+  },
+  "nurgle": {
+    "first": ["Festus", "Gurgleth", "Bloab", "Morbidex", "Tamurkhan", "Grulgoth", "Bilious", "Pustus", "Drool", "Phlegm", "Slorg", "Rotigus", "Blorthos", "Septimus", "Vomitus", "Wretchus", "Gagrid", "Festerius", "Burblex", "Gurglex", "Mucusar", "Squelchus", "Poxgrim", "Dripmore", "Bogglord", "Spewgut", "Gaggrok", "Maggotus", "Oozegrim", "Plagueboss", "Spurtus", "Sludgeth"],
+    "last": ["Rotgut", "Blightswollen", "Plaguesore", "Poxmark", "Boilburst", "Filthbreath", "Gangrene", "Wormhost", "Mucousfist", "Pusbucket", "Festerskin", "Diseaseling", "Rotbelly", "Woundrot", "Moldspore", "Slimetrail", "Contagion", "Blisterface", "Flyblown", "Soreskin", "Plaguetouched", "Stenchborn", "Reeking", "Suppurate", "Curdleblood", "Gangrenous", "Leprous", "Cancerous", "Blightborn", "Rustlung", "Maggotbreath", "Seepingwound"]
+  },
+  "ogre": {
+    "first": ["Grog", "Thud", "Bonk", "Gark", "Morg", "Crusher", "Smash", "Barg", "Groth", "Lunk", "Farg", "Krag", "Mung", "Thump", "Grug", "Darg", "Brug", "Slag", "Dreg", "Hunk", "Bork", "Chunk", "Gorb", "Klunk", "Mash", "Nog", "Plonk", "Skrag", "Trog", "Varg", "Yarg", "Zurk"],
+    "last": ["Bellygut", "Meatfist", "Ironchew", "Bonegrinder", "Pigsmasher", "Gobbletrough", "Headchomper", "Jawbreaker", "Kneecrusher", "Gutcharger", "Fleshpound", "Barrelchest", "Boulderhand", "Rocktoss", "Slamfist", "Stomper", "Tankgut", "Wallbreaker", "Armcracker", "Beerguzzler", "Clifffall", "Earthshaker", "Footcrusher", "Gutbuster", "Hamfist", "Irongullet", "Kegbelly", "Legsnapper", "Mountainmaw", "Nosecrusher", "Ribcruncher", "Skullbasher"]
+  },
+  "skaven": {
+    "first": ["Queek", "Snikch", "Thanquol", "Ikit", "Throt", "Skrolk", "Tretch", "Deathmaster", "Verminkin", "Gnawdwell", "Kratch", "Lurklox", "Paskrit", "Rikkit", "Skrittar", "Twitcht", "Vrisk", "Warpfang", "Squeek", "Skritt", "Nixxit", "Ratchit", "Scritch", "Sneek", "Tikkit", "Kreech", "Grillik", "Skratch", "Frikkit", "Nikkrit", "Spleet", "Zikrit"],
+    "last": ["Headtaker", "Scratchfang", "Warpgnaw", "Deathvermin", "Clawsnik", "Tailbiter", "Ratfink", "Plagueclaw", "Scurryfoot", "Sneaktail", "Greywhisker", "Poisontooth", "Backstabber", "Nighteyes", "Wormtail", "Blackfur", "Skullgnaw", "Sharpfang", "Darkclaw", "Fleabane", "Gutripper", "Hollowfang", "Ironclaw", "Knifetail", "Lurkshadow", "Mangletooth", "Needlefang", "Plaguetail", "Rotfur", "Shadowskull", "Venomtooth", "Warptail"]
+  },
+  "wood_elf": {
+    "first": ["Araloth", "Drycha", "Orion", "Ariel", "Naestra", "Durthu", "Scarloc", "Skaw", "Thalandor", "Athel", "Coeddil", "Daith", "Wychwethyl", "Lothlann", "Sceolan", "Aethis", "Findol", "Gyferth", "Ystranna", "Gildarion", "Ladrielle", "Nymraif", "Seraphon", "Thalandril", "Arahan", "Ceyla", "Elynett", "Gwandor", "Kaia", "Naieth", "Saerith", "Talyn"],
+    "last": ["Greenleaf", "Thornsinger", "Wildwood", "Dawnstrider", "Oakenheart", "Briarbough", "Mossheart", "Stag-crown", "Riverdance", "Fernwalker", "Birchwhisper", "Ashenbark", "Leafshadow", "Ivythorn", "Hollowroot", "Starbloom", "Mistwalker", "Rainsong", "Willowveil", "Deeproot", "Elderbow", "Foxglove", "Hawkfeather", "Junipersong", "Lichencloak", "Meadowlight", "Nightbloom", "Pinecrest", "Rootwarden", "Silverleaf", "Thistledown", "Vineheart"]
+  },
+  "amazon": {
+    "first": ["Ixchel", "Aztli", "Xochitl", "Citlali", "Itzel", "Nenetl", "Tlaloc", "Coatl", "Metzli", "Yolotl", "Tonalli", "Eztli", "Xiuhtl", "Mayahuel", "Quetzalli", "Ahuic", "Chicomec", "Ichtaca", "Milintica", "Nochtli", "Papantzin", "Sacnite", "Tenoch", "Xilonen", "Yaotl", "Centehua", "Eleuia", "Huitzil", "Macuil", "Necalli", "Teyacap", "Xocotzin"],
+    "last": ["Jaguarclaw", "Sunspear", "Serpentfang", "Stormfeather", "Thunderbow", "Bloodmoon", "Goldenmask", "Rainforest", "Skullpaint", "Windweaver", "Obsidianblade", "Firewalker", "Riverfang", "Starcatcher", "Cloudrunner", "Eaglestrike", "Forestshadow", "Hawkeye", "Lightfoot", "Moonrise", "Nighthunter", "Ocelot", "Plumedrider", "Quetzalwing", "Razorthorn", "Snakebite", "Tempestborn", "Venomstrike", "Warpaint", "Jadebow", "Coralshield", "Volcanodancer"]
+  },
+  "norse": {
+    "first": ["Bjorn", "Ragnar", "Sigurd", "Thorolf", "Ivar", "Harald", "Leif", "Olaf", "Sven", "Erik", "Knut", "Gunnar", "Hjalmar", "Torsten", "Ulfric", "Vidar", "Wulfrik", "Asbjorn", "Brynjar", "Dagfinn", "Eindride", "Frode", "Grimm", "Halvard", "Ingvar", "Jarl", "Ketill", "Lars", "Magnus", "Njord", "Orm", "Roald"],
+    "last": ["Bloodaxe", "Frostbeard", "Thunderson", "Ironside", "Wolfborn", "Stormcaller", "Dragonslayer", "Bearfang", "Ravenclaw", "Skullsplitter", "Icehammer", "Firebrand", "Galeforce", "Helmbiter", "Mountainbreaker", "Oakenshield", "Seastrider", "Wargrim", "Bonecrusher", "Darkwind", "Farstrider", "Greybeard", "Hammerfist", "Icewalker", "Longship", "Northwind", "Runecaster", "Shieldbreaker", "Trollbane", "Ulfhednar", "Winterborn", "Yggdrasil"]
+  },
+  "tomb_kings": {
+    "first": ["Settra", "Khalida", "Khatep", "Nekaph", "Phar", "Ramhotep", "Apophas", "Tutankhanut", "Usekph", "Behedesh", "Rakaph", "Alcadizzar", "Nagashizzar", "Amenhotep", "Lahmizzar", "Neferem", "Rakhash", "Sehenesmet", "Thutep", "Amanhotep", "Djedra", "Harakhte", "Imhotesh", "Kemsyt", "Mentihotep", "Nekhef", "Ophiria", "Pharakh", "Quatar", "Rashepses", "Semerkhet", "Tephret"],
+    "last": ["the Imperishable", "Deathmask", "the Undying", "of the Great Pyramid", "the Mighty", "of Khemri", "the Eternal", "Tombguard", "Sandstalker", "of Numas", "Dustwalker", "the Scorpion", "of Lahmia", "the Destroyer", "Goldenscepter", "Sandsworn", "the Liche", "Duskbringer", "Eternalsun", "Bonecarver", "the Relentless", "Sunfallen", "Desertstrider", "Obeliskguard", "Scarabsworn", "Sphinxrider", "of Zandri", "Dustborn", "Sandshaper", "Pharaohkin", "Goldenbone", "the Jackal"]
+  },
+  "vampire": {
+    "first": ["Vlad", "Isabella", "Konrad", "Mannfred", "Zacharias", "Neferata", "Ushoran", "Abhorash", "Luthor", "Walach", "Gashnag", "Melkhior", "Chandagnac", "Rametep", "Corsovo", "Adolphus", "Dieter", "Genevieve", "Harkon", "Mundvard", "Nourgul", "Radul", "Serafina", "Tzimisce", "Ulrika", "Varghulf", "Wsoran", "Ximena", "Yolande", "Zelena", "Armand", "Belakor"],
+    "last": ["von Carstein", "Nighthollow", "Bloodmoon", "Grimheart", "Duskveil", "Crimsonthirst", "Deathless", "Shadowfeast", "Darkwyn", "Nightblood", "Sanguinis", "Hollowfang", "Gravemist", "Batholme", "Cryptwell", "Dreadnight", "Everdark", "Frostblood", "Ghostpale", "Hemlock", "Ironthirst", "Knightfall", "Lurking", "Mournvale", "Nightshade", "Obsidianfang", "Paleshadow", "Ravencrest", "Silvervein", "Thornblood", "Umbrathorn", "Velvetnight"]
+  },
+  "khorne": {
+    "first": ["Skullgor", "Kharax", "Valkia", "Arbaal", "Skarr", "Scyla", "Karanak", "Bloodthirster", "Khargos", "Skulltaker", "Mazarall", "Grashrak", "Vorgaroth", "Korghos", "Skargan", "Taurox", "Ushkar", "Agrak", "Brakar", "Drazhar", "Goreax", "Hellblade", "Khul", "Morghur", "Narzak", "Orrax", "Ragnor", "Skarbrand", "Thrax", "Vorgax", "Wrathgor", "Zarkos"],
+    "last": ["Bloodreaver", "Goreslash", "Skullcollector", "Wrathborn", "Doomaxe", "Bloodbound", "Skullharvest", "Ragefire", "Crimsonblade", "Gorehowl", "Slaughterborn", "Bloodforged", "Berserker", "Headcleaver", "Khornesworn", "Marauder", "Ragefist", "Skullcracker", "Warmonger", "Axemaster", "Bloodfrenzy", "Carnage", "Doomhowl", "Executioner", "Fleshrender", "Goresplitter", "Hatemonger", "Ironfury", "Juggernaught", "Killsword", "Lifetaker", "Manslayer"]
+  },
+  "gnome": {
+    "first": ["Fizwick", "Gimble", "Tinkerton", "Boffin", "Cogsworth", "Dimble", "Eldon", "Fizzle", "Gnomus", "Hubble", "Ipswitch", "Jasper", "Kelwick", "Linnaeus", "Merriwick", "Nimble", "Oakbottom", "Pumperwick", "Quilby", "Rootwhistle", "Scrimshaw", "Thimble", "Umbridge", "Vernix", "Wobblespring", "Xander", "Yorick", "Zephwick", "Barnaby", "Crumble", "Dingle", "Figworth"],
+    "last": ["Cogsworth", "Sprocket", "Gearwhiz", "Tinkertop", "Brassbolt", "Clockwork", "Steamfiddle", "Springcoil", "Wrenchwright", "Copperwick", "Gadgeteer", "Nutcracker", "Sparkplug", "Thistlewick", "Bellchime", "Coppernose", "Dustpan", "Flintlock", "Gearspin", "Hammerwick", "Ironclamp", "Jinglebell", "Kettledrum", "Lampwick", "Maplecog", "Needlenose", "Oilcan", "Pipecleaner", "Rivetspin", "Smokestack", "Thimbletack", "Whistlegear"]
+  }
+}

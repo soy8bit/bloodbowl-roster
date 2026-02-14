@@ -31,8 +31,9 @@ export default function BudgetBar({ roster, team }: Props) {
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpanded(!expanded); } }}
         >
           <span className="budget-label">{t.teamValue}</span>
-          <span className="budget-value budget-value-gold">{formatGold(tv.total)}</span>
-          <span className="budget-expand-hint">{expanded ? '\u25B2' : '\u25BC'}</span>
+          <span className="budget-value budget-value-gold">
+            {formatGold(tv.total)} <span className="budget-expand-hint">{expanded ? '\u25B2' : '\u25BC'}</span>
+          </span>
         </div>
 
         <div className="budget-block budget-treasury">

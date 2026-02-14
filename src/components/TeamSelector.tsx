@@ -47,7 +47,7 @@ export default function TeamSelector({ teams, onSelect }: Props) {
 
   return (
     <div className="team-selector">
-      <h2 className="section-title">{t.chooseTeam}</h2>
+      <h2 className="section-title">{t.chooseTeam} <span className="season-badge-sm">S3</span></h2>
       <div className="selector-controls">
         <input
           type="text"

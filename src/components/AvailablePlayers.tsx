@@ -13,8 +13,9 @@ interface Props {
 }
 
 export default function AvailablePlayers({ team, roster, playerMap, skills, onAdd, onSkillClick }: Props) {
-  const statLabels = ['MA', 'ST', 'AG', 'PA', 'AV'];
+  const statLabels = ['MA', 'ST', 'AG', 'PA', 'AV'] as const;
   const { lang, t } = useLang();
+  const statTips: Record<string, string> = { MA: t.tipMA, ST: t.tipST, AG: t.tipAG, PA: t.tipPA, AV: t.tipAV };
 
   return (
     <div className="available-players">
@@ -25,11 +26,11 @@ export default function AvailablePlayers({ team, roster, playerMap, skills, onAd
             <tr>
               <th>{t.position}</th>
               {statLabels.map((l) => (
-                <th key={l} className="col-stat-h">{l}</th>
+                <th key={l} className="col-stat-h" title={statTips[l]}>{l}</th>
               ))}
               <th>{t.skills}</th>
-              <th>{t.cost}</th>
-              <th>{t.qty}</th>
+              <th className="col-cost">{t.cost}</th>
+              <th className="col-qty">{t.qty}</th>
               <th></th>
             </tr>
           </thead>

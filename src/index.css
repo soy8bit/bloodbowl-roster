@@ -1,0 +1,39 @@
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
+
+/* Minimal button reset (no preflight) — class selectors like .btn-primary override this */
+button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--bg-card);
+  --color-card-foreground: var(--text-primary);
+  --color-muted: var(--bg-secondary);
+  --color-muted-foreground: var(--text-muted);
+  --color-border: var(--border);
+  --color-input: var(--bg-input);
+  --color-accent: var(--accent-gold);
+  --color-accent-foreground: var(--accent-on);
+  --color-destructive: var(--danger);
+  --color-primary: var(--accent-red);
+  --color-primary-foreground: #fff;
+  --color-secondary: var(--bg-secondary);
+  --color-secondary-foreground: var(--text-primary);
+  --color-popover: var(--bg-card);
+  --color-popover-foreground: var(--text-primary);
+  --color-ring: var(--accent-gold);
+  --color-destructive-foreground: var(--text-primary);
+  --ring-offset-color: var(--bg-primary);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}

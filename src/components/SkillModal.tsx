@@ -40,6 +40,7 @@ export default function SkillModal({ skill, onClose }: Props) {
     M: t.catMutation,
     P: t.catPassing,
     S: t.catStrength,
+    D: t.catDevious,
     T: t.catTrait,
     NA: t.catExtraordinary,
   };
